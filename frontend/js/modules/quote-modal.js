@@ -33,6 +33,92 @@
         'Ahmedabad': { 'Mumbai': 530, 'Delhi': 950, 'Bangalore': 1640, 'Hyderabad': 1270, 'Jaipur': 660, 'Surat': 270, 'Rajkot': 220 }
     };
 
+    // City GPS coordinates for accurate distance calculation (Haversine formula)
+    const cityCoordinates = {
+        'Mumbai': [19.0760, 72.8777],
+        'Delhi': [28.7041, 77.1025],
+        'Bangalore': [12.9716, 77.5946],
+        'Hyderabad': [17.3850, 78.4867],
+        'Ahmedabad': [23.0225, 72.5714],
+        'Chennai': [13.0827, 80.2707],
+        'Kolkata': [22.5726, 88.3639],
+        'Pune': [18.5204, 73.8567],
+        'Jaipur': [26.9124, 75.7873],
+        'Surat': [21.1702, 72.8311],
+        'Lucknow': [26.8467, 80.9462],
+        'Kanpur': [26.4499, 80.3319],
+        'Nagpur': [21.1458, 79.0882],
+        'Indore': [22.7196, 75.8577],
+        'Thane': [19.2183, 72.9781],
+        'Bhopal': [23.2599, 77.4126],
+        'Visakhapatnam': [17.6868, 83.2185],
+        'Patna': [25.5941, 85.1376],
+        'Vadodara': [22.3072, 73.1812],
+        'Ghaziabad': [28.6692, 77.4538],
+        'Ludhiana': [30.9010, 75.8573],
+        'Agra': [27.1767, 78.0081],
+        'Nashik': [19.9975, 73.7898],
+        'Meerut': [28.9845, 77.7064],
+        'Rajkot': [22.3039, 70.8022],
+        'Varanasi': [25.3176, 82.9739],
+        'Srinagar': [34.0837, 74.7973],
+        'Amritsar': [31.6340, 74.8723],
+        'Coimbatore': [11.0168, 76.9558],
+        'Jodhpur': [26.2389, 73.0243],
+        'Madurai': [9.9252, 78.1198],
+        'Chandigarh': [30.7333, 76.7794],
+        'Guwahati': [26.1445, 91.7362],
+        'Mysore': [12.2958, 76.6394],
+        'Gurgaon': [28.4595, 77.0266],
+        'Bhubaneswar': [20.2961, 85.8245],
+        'Kochi': [9.9312, 76.2673],
+        'Dehradun': [30.3165, 78.0322],
+        'Mangalore': [12.9141, 74.8560],
+        'Goa': [15.2993, 74.1240],
+        'Panaji': [15.4909, 73.8278],
+        'Vijayawada': [16.5062, 80.6480],
+        'Pimpri-Chinchwad': [18.6212, 73.8027],
+        'Faridabad': [28.4089, 77.3178],
+        'Kalyan-Dombivali': [19.2403, 73.1305],
+        'Vasai-Virar': [19.4558, 72.8110],
+        'Aurangabad': [19.8762, 75.3433],
+        'Dhanbad': [23.7957, 86.4304],
+        'Navi Mumbai': [19.0330, 73.0299],
+        'Allahabad': [25.4444, 81.8432],
+        'Ranchi': [23.3441, 85.3095],
+        'Howrah': [22.5958, 88.2639],
+        'Jabalpur': [23.1815, 79.9864],
+        'Gwalior': [26.2163, 78.1772],
+        'Raipur': [21.2514, 81.6296],
+        'Kota': [25.2138, 75.8648],
+        'Solapur': [17.6599, 75.9063],
+        'Hubli-Dharwad': [15.3647, 75.1249],
+        'Tiruchirappalli': [10.7905, 78.7045],
+        'Bareilly': [28.3274, 79.4319],
+        'Moradabad': [28.8441, 78.7768],
+        'Mysuru': [12.2958, 76.6394],
+        'Aligarh': [27.8815, 78.0794],
+        'Jalandhar': [31.3260, 75.5763],
+        'Salem': [11.6643, 78.1460],
+        'Mira-Bhayandar': [19.2819, 72.8677],
+        'Warangal': [17.9784, 79.5941],
+        'Guntur': [16.2992, 80.4573],
+        'Bhiwandi': [19.3002, 73.0647],
+        'Saharanpur': [29.9670, 77.5512],
+        'Gorakhpur': [26.8467, 83.3705],
+        'Bikaner': [28.0229, 73.3119],
+        'Amravati': [20.9335, 77.7750],
+        'Noida': [28.5355, 77.2100],
+        'Jamshedpur': [22.8268, 86.2031],
+        'Bhilai': [20.8972, 81.3390],
+        'Cuttack': [20.4625, 85.8831],
+        'Firozabad': [27.1492, 78.2832],
+        'Nellore': [14.4426, 79.9865],
+        'Bhavnagar': [21.7645, 72.1519],
+        'Durgapur': [23.5204, 87.3119],
+        'Asansol': [23.6738, 86.9524]
+    };
+
     // Pricing per km based on vehicle type
     const pricingRates = {
         'hatchback': 8,
@@ -76,6 +162,8 @@
         const form = document.getElementById('quickQuoteForm');
         if (!form) return;
 
+        injectQuoteEnhancementStyles();
+
         const fromCityInput = document.getElementById('fromCity');
         const toCityInput = document.getElementById('toCity');
         const vehicleTypeSelect = document.getElementById('vehicleType');
@@ -93,7 +181,7 @@
         step1Next.addEventListener('click', () => validateAndNextStep());
         step2Back.addEventListener('click', () => goToStep(1));
         resetBtn.addEventListener('click', () => resetForm());
-        
+
         // Book Now handler
         if (bookNowBtn) {
             bookNowBtn.addEventListener('click', () => handleBookNow());
@@ -115,37 +203,63 @@
         toCityInput.addEventListener('input', () => updateDistance());
 
         // Handle select focus for floating label
-        vehicleTypeSelect.addEventListener('change', function() {
+        vehicleTypeSelect.addEventListener('change', function () {
             if (this.value) {
                 this.setAttribute('value', this.value);
             } else {
                 this.removeAttribute('value');
             }
         });
+        const actions = document.querySelector('.quote-result .result-actions');
+        if (actions && !document.getElementById('shareQuoteBtn')) {
+            const shareBtn = document.createElement('button');
+            shareBtn.type = 'button';
+            shareBtn.id = 'shareQuoteBtn';
+            shareBtn.className = 'quote-save-later-btn';
+            shareBtn.innerHTML = '<i class="fas fa-share-alt"></i><span>Share Quote</span>';
+            shareBtn.addEventListener('click', () => handleShareQuote());
+            actions.appendChild(shareBtn);
+        }
+        if (actions && !document.getElementById('copyQuoteBtn')) {
+            const copyBtn = document.createElement('button');
+            copyBtn.type = 'button';
+            copyBtn.id = 'copyQuoteBtn';
+            copyBtn.className = 'quote-save-later-btn';
+            copyBtn.innerHTML = '<i class="fas fa-link"></i><span>Copy Link</span>';
+            copyBtn.addEventListener('click', () => { if (currentQuoteData) copyQuoteLink(currentQuoteData); });
+            actions.appendChild(copyBtn);
+        }
+        applyQuoteFromQuery();
     }
-    
+
     /**
      * Handle Book Now Click
      */
+    /**
+ * Handle Book Now Click - Smooth Transition to Booking Page
+ */
     function handleBookNow() {
         const fromCity = selectedFromCity;
         const toCity = selectedToCity;
         const vehicleType = document.getElementById('vehicleType').value;
-        const amount = document.getElementById('resultAmount').textContent;
-        
-        // Show confirmation message
-        const confirmed = confirm(
-            `🚗 Booking Summary\\n\\n` +
-            `Route: ${fromCity} → ${toCity}\\n` +
-            `Vehicle: ${vehicleType.charAt(0).toUpperCase() + vehicleType.slice(1)}\\n` +
-            `Estimated Cost: ${amount}\\n\\n` +
-            `Would you like to proceed to the booking page?`
-        );
-        
-        if (confirmed) {
-            // Redirect to booking page
+
+        const bookingDraft = {
+            step: 1,
+            timestamp: new Date().toISOString(),
+            fields: {
+                pickupCity: fromCity,
+                dropCity: toCity,
+                vehicleType: vehicleType
+            }
+        };
+
+        sessionStorage.setItem('bookingDraft', JSON.stringify(bookingDraft));
+
+        showNotification('Redirecting to secure booking page...', 'success');
+
+        setTimeout(() => {
             window.location.href = './pages/booking.html';
-        }
+        }, 800);
     }
 
     /**
@@ -155,34 +269,34 @@
         if (!currentQuoteData) return;
 
         const saveLaterBtn = document.getElementById('saveLaterBtn');
-        
+
         // Get existing saved quotes
         let savedQuotes = JSON.parse(localStorage.getItem('savedQuotes') || '[]');
-        
+
         // Add current quote with timestamp
         const quoteToSave = {
             ...currentQuoteData,
             savedAt: new Date().toISOString(),
             id: Date.now()
         };
-        
+
         savedQuotes.push(quoteToSave);
-        
+
         // Limit to 10 saved quotes
         if (savedQuotes.length > 10) {
             savedQuotes = savedQuotes.slice(-10);
         }
-        
+
         // Save to localStorage
         localStorage.setItem('savedQuotes', JSON.stringify(savedQuotes));
-        
+
         // Update button state
         saveLaterBtn.classList.add('saved');
         saveLaterBtn.innerHTML = '<i class="fas fa-check"></i><span>Saved!</span>';
-        
+
         // Show notification
         showNotification('Quote saved successfully! You can access it later from your saved quotes.', 'success');
-        
+
         // Reset button after 3 seconds
         setTimeout(() => {
             saveLaterBtn.classList.remove('saved');
@@ -212,32 +326,138 @@
         `;
         notification.textContent = message;
         document.body.appendChild(notification);
-        
+
         setTimeout(() => {
             notification.style.animation = 'slideOutRight 0.3s ease';
             setTimeout(() => notification.remove(), 300);
         }, 3000);
     }
 
+    function injectQuoteEnhancementStyles() {
+        if (document.getElementById('quoteEnhanceStyles')) return;
+        const style = document.createElement('style');
+        style.id = 'quoteEnhanceStyles';
+        style.textContent = `
+            .amount-bump { animation: amountBump .6s ease; }
+            @keyframes amountBump { 0%{transform:scale(1)} 40%{transform:scale(1.08)} 100%{transform:scale(1)} }
+            .price-option { transition: transform .2s, box-shadow .2s; }
+            .price-option:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,.08); }
+            .price-option.selected { box-shadow: 0 12px 24px rgba(34,197,94,.25); transform: translateY(-2px); }
+            .result-actions button { transition: transform .2s, box-shadow .2s; }
+            .result-actions button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,.1); }
+        `;
+        document.head.appendChild(style);
+    }
+
+    function animateAmount(selector) {
+        const el = document.querySelector(selector);
+        if (!el) return;
+        el.classList.add('amount-bump');
+        setTimeout(() => el.classList.remove('amount-bump'), 600);
+    }
+
+    function shareQuote(data) {
+        if (!data) return;
+        const link = generateQuoteLink(data);
+        const title = 'Your Car Transport Quote';
+        const text = `${data.fromCity} → ${data.toCity} • ${data.vehicleType} • ₹${data.price.toLocaleString('en-IN')}`;
+        if (navigator.share) {
+            navigator.share({ title, text, url: link }).catch(() => { });
+            return;
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(link).then(() => {
+                showNotification('Share link copied to clipboard', 'info');
+            }).catch(() => { });
+        }
+        const wa = `https://wa.me/?text=${encodeURIComponent(text + '\n' + link)}`;
+        const mail = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(text + '\n' + link)}`;
+        window.open(wa, '_blank');
+        window.open(mail, '_self');
+    }
+
+    function copyQuoteLink(data) {
+        if (!data || !navigator.clipboard || !navigator.clipboard.writeText) return;
+        const link = generateQuoteLink(data);
+        navigator.clipboard.writeText(link).then(() => {
+            showNotification('Link copied to clipboard', 'info');
+        }).catch(() => { });
+    }
+
+    function generateQuoteLink(data) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('from', data.fromCity);
+        url.searchParams.set('to', data.toCity);
+        url.searchParams.set('vehicle', data.vehicleType);
+        url.searchParams.set('distance', String(data.distance));
+        url.searchParams.set('price', String(data.price));
+        return url.toString();
+    }
+
+    function handleShareQuote() {
+        if (!currentQuoteData) {
+            alert('Please complete the quote first');
+            return;
+        }
+        const link = generateQuoteLink(currentQuoteData);
+        const title = 'Your Car Transport Quote';
+        const text = `${currentQuoteData.fromCity} → ${currentQuoteData.toCity} • ${currentQuoteData.vehicleType} • ₹${currentQuoteData.price.toLocaleString('en-IN')}`;
+        if (navigator.share) {
+            navigator.share({ title, text, url: link }).catch(() => { });
+            return;
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(link).then(() => {
+                showNotification('Share link copied to clipboard', 'info');
+            }).catch(() => { });
+        }
+        const wa = `https://wa.me/?text=${encodeURIComponent(text + '\n' + link)}`;
+        const mail = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(text + '\n' + link)}`;
+        window.open(wa, '_blank');
+        window.open(mail, '_self');
+    }
+
+    function applyQuoteFromQuery() {
+        const params = new URLSearchParams(window.location.search);
+        const from = params.get('from');
+        const to = params.get('to');
+        const vehicle = params.get('vehicle');
+        if (from) {
+            const fromInput = document.getElementById('fromCity');
+            fromInput.value = from;
+            selectedFromCity = from;
+        }
+        if (to) {
+            const toInput = document.getElementById('toCity');
+            toInput.value = to;
+            selectedToCity = to;
+        }
+        if (from && to) updateDistance();
+        if (vehicle) {
+            const select = document.getElementById('vehicleType');
+            select.value = vehicle;
+            select.setAttribute('value', vehicle);
+        }
+        if (from && to && vehicle) {
+            calculateQuote();
+        }
+    }
+
     /**
      * Calculate Delivery Time
      */
     function calculateDeliveryTime(distance) {
-        // Estimate delivery based on distance
-        // Assuming average speed of 400-500 km per day for transport
-        const daysNeeded = Math.ceil(distance / 450);
-        
-        if (daysNeeded <= 1) {
-            return '1-2 days';
-        } else if (daysNeeded <= 3) {
-            return '2-3 days';
-        } else if (daysNeeded <= 5) {
-            return '3-5 days';
-        } else if (daysNeeded <= 7) {
-            return '5-7 days';
-        } else {
-            return '7-10 days';
-        }
+        // Estimate delivery based on distance as per issue #910
+        // Realistic transport distance: 200-300km per day
+        // Base buffer: 1-2 days for processing/pickup
+
+        const minTravelDays = Math.ceil(distance / 300);
+        const maxTravelDays = Math.ceil(distance / 200);
+
+        const minTotalDays = minTravelDays + 1;
+        const maxTotalDays = maxTravelDays + 2;
+
+        return `${minTotalDays}–${maxTotalDays} Days`;
     }
 
     /**
@@ -246,54 +466,72 @@
     function displayComparePrices(vehicleType, distance) {
         const comparePricesSection = document.getElementById('comparePricesSection');
         const priceOptions = document.getElementById('priceOptions');
-        
+
         if (!transportOptions[vehicleType]) {
             comparePricesSection.style.display = 'none';
             return;
         }
-        
+
         const options = transportOptions[vehicleType];
-        
+
         // Generate price option cards
         priceOptions.innerHTML = options.map((option, index) => {
             const price = Math.round(option.rate * distance);
+
+            // Calculate dynamic delivery days based on service level
+            let deliveryDays = '';
+            const minDays = Math.ceil(distance / 300);
+            const maxDays = Math.ceil(distance / 200);
+
+            if (option.name === 'Economy') {
+                deliveryDays = `${minDays + 3}–${maxDays + 5}`;
+            } else if (option.name === 'Express' || option.name === 'VIP' || option.name === 'Premium') {
+                deliveryDays = `${Math.max(1, minDays)}–${Math.max(2, maxDays + 1)}`;
+            } else { // Standard
+                deliveryDays = `${minDays + 1}–${maxDays + 2}`;
+            }
+
+            // Update option object for the click handler
+            option.calculatedDeliveryDays = deliveryDays;
+
             return `
                 <div class="price-option ${option.bestValue ? 'best-value' : ''}" data-option-index="${index}">
                     <div class="price-option-info">
                         <div class="price-option-name">${option.name}</div>
                         <div class="price-option-details">
-                            <i class="fas fa-clock"></i> ${option.deliveryDays} days • ${option.description}
+                            <i class="fas fa-clock"></i> ${deliveryDays} Days • ${option.description}
                         </div>
                     </div>
                     <div class="price-option-amount">₹${price.toLocaleString('en-IN')}</div>
                 </div>
             `;
         }).join('');
-        
+
         comparePricesSection.style.display = 'block';
-        
+
         // Add click handlers for price options
-        document.querySelectorAll('.price-option').forEach((option, index) => {
-            option.addEventListener('click', () => {
+        document.querySelectorAll('.price-option').forEach((optionEl, index) => {
+            optionEl.addEventListener('click', () => {
                 // Remove previous selection
                 document.querySelectorAll('.price-option').forEach(opt => opt.classList.remove('selected'));
-                
+
                 // Select this option
-                option.classList.add('selected');
-                
+                optionEl.classList.add('selected');
+
                 // Update main price display
                 const selectedOption = options[index];
                 const price = Math.round(selectedOption.rate * distance);
                 document.getElementById('resultAmount').textContent = `₹${price.toLocaleString('en-IN')}`;
-                
-                // Update delivery time
-                document.getElementById('deliveryTime').textContent = selectedOption.deliveryDays + ' days';
-                
+
+                // Update delivery time using the calculated value
+                const deliveryTimeDisplay = selectedOption.calculatedDeliveryDays + ' Days';
+                document.getElementById('deliveryTime').textContent = deliveryTimeDisplay;
+
                 // Update current quote data
                 if (currentQuoteData) {
                     currentQuoteData.selectedOption = selectedOption.name;
                     currentQuoteData.price = price;
-                    currentQuoteData.deliveryTime = selectedOption.deliveryDays + ' days';
+                    currentQuoteData.deliveryTime = deliveryTimeDisplay;
                 }
             });
         });
@@ -304,16 +542,16 @@
      */
     function setupAutocomplete(input, dropdownId) {
         const dropdown = document.getElementById(dropdownId);
-        
-        input.addEventListener('input', function() {
+
+        input.addEventListener('input', function () {
             const value = this.value.trim();
-            
+
             if (value.length < 1) {
                 dropdown.classList.remove('active');
                 return;
             }
 
-            const matches = indianCities.filter(city => 
+            const matches = indianCities.filter(city =>
                 city.toLowerCase().startsWith(value.toLowerCase())
             );
 
@@ -326,7 +564,7 @@
         });
 
         // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             if (!input.contains(e.target) && !dropdown.contains(e.target)) {
                 dropdown.classList.remove('active');
             }
@@ -338,12 +576,12 @@
      */
     function displayAutocomplete(cities, dropdown, input) {
         // Filter out the other city if already selected
-        const otherInput = input.id === 'fromCity' 
-            ? document.getElementById('toCity') 
+        const otherInput = input.id === 'fromCity'
+            ? document.getElementById('toCity')
             : document.getElementById('fromCity');
         const otherCity = otherInput ? otherInput.value.trim() : '';
-        
-        const filteredCities = otherCity 
+
+        const filteredCities = otherCity
             ? cities.filter(city => city !== otherCity)
             : cities;
 
@@ -358,23 +596,23 @@
 
         // Add click handlers
         dropdown.querySelectorAll('.autocomplete-item').forEach(item => {
-            const selectCity = function(e) {
+            const selectCity = function (e) {
                 e.preventDefault();
                 e.stopPropagation();
                 const city = item.dataset.city;
                 input.value = city;
                 dropdown.classList.remove('active');
-                
+
                 // Store selected city
                 if (input.id === 'fromCity') {
                     selectedFromCity = city;
                 } else {
                     selectedToCity = city;
                 }
-                
+
                 updateDistance();
             };
-            
+
             item.addEventListener('click', selectCity);
             item.addEventListener('mousedown', selectCity);
         });
@@ -390,6 +628,10 @@
 
         if (!fromCity || !toCity) {
             distanceValue.textContent = '---';
+            // Dispatch empty event to reset visualizer
+            document.dispatchEvent(new CustomEvent('routeDetailsUpdated', {
+                detail: { from: '', to: '', distance: 0 }
+            }));
             return;
         }
 
@@ -397,32 +639,77 @@
         if (fromCity.toLowerCase() === toCity.toLowerCase()) {
             distanceValue.textContent = 'Same city!';
             distanceValue.style.color = '#ef4444';
+            // Dispatch empty event to reset visualizer
+            document.dispatchEvent(new CustomEvent('routeDetailsUpdated', {
+                detail: { from: '', to: '', distance: 0 }
+            }));
             return;
         }
 
         const distance = calculateDistance(fromCity, toCity);
-        
+
         if (distance) {
             distanceValue.textContent = `${distance} km`;
             distanceValue.style.color = '#4ade80';
         } else {
-            // Estimate based on random if not in matrix
-            const estimatedDistance = Math.floor(Math.random() * 1500) + 300;
-            distanceValue.textContent = `~${estimatedDistance} km (estimated)`;
+            // Default fallback if city not found
+            distanceValue.textContent = `--- km`;
             distanceValue.style.color = '#fbbf24';
         }
+
+        // Dispatch custom event for route visualizer
+        document.dispatchEvent(new CustomEvent('routeDetailsUpdated', {
+            detail: {
+                from: fromCity,
+                to: toCity,
+                distance: distance || 0
+            }
+        }));
+    }
+
+    /**
+     * Calculate distance using Haversine formula
+     * @param {number[]} coord1 - [latitude, longitude]
+     * @param {number[]} coord2 - [latitude, longitude]
+     * @returns {number} Distance in kilometers
+     */
+    function calculateHaversineDistance(coord1, coord2) {
+        const R = 6371; // Earth's radius in km
+        const lat1 = coord1[0] * Math.PI / 180;
+        const lat2 = coord2[0] * Math.PI / 180;
+        const deltaLat = (coord2[0] - coord1[0]) * Math.PI / 180;
+        const deltaLon = (coord2[1] - coord1[1]) * Math.PI / 180;
+
+        const a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+            Math.cos(lat1) * Math.cos(lat2) *
+            Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return Math.round(R * c);
     }
 
     /**
      * Calculate Distance Between Cities
+     * First checks distanceMatrix, then uses GPS coordinates (Haversine formula)
      */
     function calculateDistance(from, to) {
+        // Check predefined distance matrix first
         if (distanceMatrix[from] && distanceMatrix[from][to]) {
             return distanceMatrix[from][to];
         }
         if (distanceMatrix[to] && distanceMatrix[to][from]) {
             return distanceMatrix[to][from];
         }
+
+        // Fallback to GPS coordinate calculation
+        const fromCoords = cityCoordinates[from];
+        const toCoords = cityCoordinates[to];
+
+        if (fromCoords && toCoords) {
+            return calculateHaversineDistance(fromCoords, toCoords);
+        }
+
+        // If no data available, return null
         return null;
     }
 
@@ -486,7 +773,7 @@
             return;
         }
 
-        const distance = calculateDistance(fromCity, toCity) || Math.floor(Math.random() * 1500) + 300;
+        const distance = calculateDistance(fromCity, toCity) || 500;
         const rate = pricingRates[vehicleType];
         const basePrice = distance * rate;
         const estimatedPrice = Math.round(basePrice);
@@ -497,6 +784,7 @@
         document.getElementById('resultDistance').textContent = `${distance} km`;
         document.getElementById('resultVehicle').textContent = vehicleType.charAt(0).toUpperCase() + vehicleType.slice(1);
         document.getElementById('resultAmount').textContent = `₹${estimatedPrice.toLocaleString('en-IN')}`;
+        animateAmount('#resultAmount');
         document.getElementById('deliveryTime').textContent = deliveryTime;
 
         // Store current quote data
@@ -513,6 +801,13 @@
         // Display compare prices
         displayComparePrices(vehicleType, distance);
 
+        // Inject comparison widget after a short delay
+        setTimeout(() => {
+            if (window.ComparisonWidget) {
+                window.ComparisonWidget.inject('#quoteResult');
+            }
+        }, 800);
+
         // Go to result step
         goToStep(3);
     }
@@ -528,17 +823,27 @@
         document.getElementById('vehicleType').removeAttribute('value');
         document.getElementById('distanceValue').textContent = '---';
         document.getElementById('deliveryTime').textContent = '---';
-        
+
         // Hide compare prices section
         const comparePricesSection = document.getElementById('comparePricesSection');
         if (comparePricesSection) {
             comparePricesSection.style.display = 'none';
         }
-        
+
+        // Remove comparison widget
+        if (window.ComparisonWidget) {
+            window.ComparisonWidget.remove();
+        }
+
         selectedFromCity = '';
         selectedToCity = '';
         currentQuoteData = null;
         goToStep(1);
+
+        // Dispatch empty event to reset visualizer
+        document.dispatchEvent(new CustomEvent('routeDetailsUpdated', {
+            detail: { from: '', to: '', distance: 0 }
+        }));
     }
 
     /**
@@ -670,7 +975,7 @@
                                 <div class="delivery-time-display" id="modalDeliveryTimeDisplay">
                                     <i class="fas fa-clock"></i>
                                     <div class="time-info">
-                                        <span class="time-label">Estimated Delivery</span>
+                                        <span class="time-label">Expected Delivery:</span>
                                         <span class="time-value" id="modalDeliveryTime">---</span>
                                     </div>
                                 </div>
@@ -761,6 +1066,30 @@
         const modalBookNowBtn = document.getElementById('modalBookNowBtn');
         const modalSaveLaterBtn = document.getElementById('modalSaveLaterBtn');
 
+        injectQuoteEnhancementStyles();
+
+        const modalActions = document.querySelector('#modalQuoteResult .result-actions');
+        if (modalActions) {
+            if (!document.getElementById('modalShareQuoteBtn')) {
+                const shareBtn = document.createElement('button');
+                shareBtn.type = 'button';
+                shareBtn.id = 'modalShareQuoteBtn';
+                shareBtn.className = 'quote-save-later-btn';
+                shareBtn.innerHTML = '<i class="fas fa-share-alt"></i><span>Share Quote</span>';
+                shareBtn.addEventListener('click', () => { if (modalQuoteData) shareQuote(modalQuoteData); });
+                modalActions.appendChild(shareBtn);
+            }
+            if (!document.getElementById('modalCopyQuoteBtn')) {
+                const copyBtn = document.createElement('button');
+                copyBtn.type = 'button';
+                copyBtn.id = 'modalCopyQuoteBtn';
+                copyBtn.className = 'quote-save-later-btn';
+                copyBtn.innerHTML = '<i class="fas fa-link"></i><span>Copy Link</span>';
+                copyBtn.addEventListener('click', () => { if (modalQuoteData) copyQuoteLink(modalQuoteData); });
+                modalActions.appendChild(copyBtn);
+            }
+        }
+
         // Setup autocomplete for modal
         if (modalFromCity) setupAutocomplete(modalFromCity, 'modalFromCityDropdown');
         if (modalToCity) setupAutocomplete(modalToCity, 'modalToCityDropdown');
@@ -775,7 +1104,7 @@
 
         // Handle select focus for floating label
         if (modalVehicleType) {
-            modalVehicleType.addEventListener('change', function() {
+            modalVehicleType.addEventListener('change', function () {
                 if (this.value) {
                     this.setAttribute('value', this.value);
                 } else {
@@ -819,12 +1148,17 @@
                 modalVehicleType.removeAttribute('value');
                 document.getElementById('modalDistanceValue').textContent = '---';
                 document.getElementById('modalDeliveryTime').textContent = '---';
-                
+
                 const comparePricesSection = document.getElementById('modalComparePricesSection');
                 if (comparePricesSection) {
                     comparePricesSection.style.display = 'none';
                 }
-                
+
+                // Remove comparison widget from modal
+                if (window.ComparisonWidget) {
+                    window.ComparisonWidget.remove();
+                }
+
                 modalSelectedFromCity = '';
                 modalSelectedToCity = '';
                 modalQuoteData = null;
@@ -841,7 +1175,7 @@
                     `Estimated Cost: ${document.getElementById('modalResultAmount').textContent}\\n\\n` +
                     `Would you like to proceed to the booking page?`
                 );
-                
+
                 if (confirmed) {
                     window.location.href = './pages/booking.html';
                 }
@@ -858,19 +1192,19 @@
                     savedAt: new Date().toISOString(),
                     id: Date.now()
                 };
-                
+
                 savedQuotes.push(quoteToSave);
                 if (savedQuotes.length > 10) {
                     savedQuotes = savedQuotes.slice(-10);
                 }
-                
+
                 localStorage.setItem('savedQuotes', JSON.stringify(savedQuotes));
-                
+
                 modalSaveLaterBtn.classList.add('saved');
                 modalSaveLaterBtn.innerHTML = '<i class="fas fa-check"></i><span>Saved!</span>';
-                
+
                 showNotification('Quote saved successfully!', 'success');
-                
+
                 setTimeout(() => {
                     modalSaveLaterBtn.classList.remove('saved');
                     modalSaveLaterBtn.innerHTML = '<i class="fas fa-bookmark"></i><span>Save for Later</span>';
@@ -895,7 +1229,7 @@
             }
 
             const distance = calculateDistance(fromCity, toCity);
-            
+
             if (distance) {
                 distanceValue.textContent = `${distance} km`;
                 distanceValue.style.color = '#4ade80';
@@ -925,7 +1259,7 @@
             // Update form steps in modal
             const modalFormSteps = document.querySelectorAll('#quoteForm .form-step');
             console.log('Modal form steps found:', modalFormSteps.length);
-            
+
             modalFormSteps.forEach((el) => {
                 el.classList.remove('active');
                 const elStep = parseInt(el.dataset.step);
@@ -939,7 +1273,7 @@
         }
 
         // Store functions for modal quote calculation
-        window.calculateModalQuote = function() {
+        window.calculateModalQuote = function () {
             const vehicleType = modalVehicleType.value;
             const fromCity = modalSelectedFromCity;
             const toCity = modalSelectedToCity;
@@ -951,7 +1285,7 @@
                 return;
             }
 
-            const distance = calculateDistance(fromCity, toCity) || Math.floor(Math.random() * 1500) + 300;
+            const distance = calculateDistance(fromCity, toCity) || 500;
             const rate = pricingRates[vehicleType];
             const basePrice = distance * rate;
             const estimatedPrice = Math.round(basePrice);
@@ -964,6 +1298,7 @@
             document.getElementById('modalResultDistance').textContent = `${distance} km`;
             document.getElementById('modalResultVehicle').textContent = vehicleType.charAt(0).toUpperCase() + vehicleType.slice(1);
             document.getElementById('modalResultAmount').textContent = `₹${estimatedPrice.toLocaleString('en-IN')}`;
+            animateAmount('#modalResultAmount');
             document.getElementById('modalDeliveryTime').textContent = deliveryTime;
 
             // Store modal quote data
@@ -980,6 +1315,13 @@
             // Display compare prices
             displayModalComparePrices(vehicleType, distance);
 
+            // Inject comparison widget for modal
+            setTimeout(() => {
+                if (window.ComparisonWidget) {
+                    window.ComparisonWidget.inject('#modalQuoteResult');
+                }
+            }, 800);
+
             // Go to result step
             console.log('Moving to step 3');
             goToModalStep(3);
@@ -988,45 +1330,64 @@
         function displayModalComparePrices(vehicleType, distance) {
             const comparePricesSection = document.getElementById('modalComparePricesSection');
             const priceOptions = document.getElementById('modalPriceOptions');
-            
+
             if (!transportOptions[vehicleType]) {
                 comparePricesSection.style.display = 'none';
                 return;
             }
-            
+
             const options = transportOptions[vehicleType];
-            
+
             priceOptions.innerHTML = options.map((option, index) => {
                 const price = Math.round(option.rate * distance);
+
+                // Calculate dynamic delivery days based on service level
+                let deliveryDays = '';
+                const minDays = Math.ceil(distance / 300);
+                const maxDays = Math.ceil(distance / 200);
+
+                if (option.name === 'Economy') {
+                    deliveryDays = `${minDays + 3}–${maxDays + 5}`;
+                } else if (option.name === 'Express' || option.name === 'VIP' || option.name === 'Premium') {
+                    deliveryDays = `${Math.max(1, minDays)}–${Math.max(2, maxDays + 1)}`;
+                } else { // Standard
+                    deliveryDays = `${minDays + 1}–${maxDays + 2}`;
+                }
+
+                // Update option object for the click handler
+                option.calculatedDeliveryDays = deliveryDays;
+
                 return `
                     <div class="price-option ${option.bestValue ? 'best-value' : ''}" data-option-index="${index}">
                         <div class="price-option-info">
                             <div class="price-option-name">${option.name}</div>
                             <div class="price-option-details">
-                                <i class="fas fa-clock"></i> ${option.deliveryDays} days • ${option.description}
+                                <i class="fas fa-clock"></i> ${deliveryDays} Days • ${option.description}
                             </div>
                         </div>
                         <div class="price-option-amount">₹${price.toLocaleString('en-IN')}</div>
                     </div>
                 `;
             }).join('');
-            
+
             comparePricesSection.style.display = 'block';
-            
-            document.querySelectorAll('#modalPriceOptions .price-option').forEach((option, index) => {
-                option.addEventListener('click', () => {
+
+            document.querySelectorAll('#modalPriceOptions .price-option').forEach((optionEl, index) => {
+                optionEl.addEventListener('click', () => {
                     document.querySelectorAll('#modalPriceOptions .price-option').forEach(opt => opt.classList.remove('selected'));
-                    option.classList.add('selected');
-                    
+                    optionEl.classList.add('selected');
+
                     const selectedOption = options[index];
                     const price = Math.round(selectedOption.rate * distance);
                     document.getElementById('modalResultAmount').textContent = `₹${price.toLocaleString('en-IN')}`;
-                    document.getElementById('modalDeliveryTime').textContent = selectedOption.deliveryDays + ' days';
-                    
+                    // Update delivery time using the calculated value
+                    const deliveryTimeDisplay = selectedOption.calculatedDeliveryDays + ' Days';
+                    document.getElementById('modalDeliveryTime').textContent = deliveryTimeDisplay;
+
                     if (modalQuoteData) {
                         modalQuoteData.selectedOption = selectedOption.name;
                         modalQuoteData.price = price;
-                        modalQuoteData.deliveryTime = selectedOption.deliveryDays + ' days';
+                        modalQuoteData.deliveryTime = deliveryTimeDisplay;
                     }
                 });
             });
@@ -1043,22 +1404,22 @@
         // Reset form
         if (form) {
             form.reset();
-            
+
             // Reset modal fields
             const modalFromCity = document.getElementById('modalFromCity');
             const modalToCity = document.getElementById('modalToCity');
             const modalVehicleType = document.getElementById('modalVehicleType');
-            
+
             if (modalFromCity) modalFromCity.value = '';
             if (modalToCity) modalToCity.value = '';
             if (modalVehicleType) {
                 modalVehicleType.value = '';
                 modalVehicleType.removeAttribute('value');
             }
-            
+
             const modalDistanceValue = document.getElementById('modalDistanceValue');
             if (modalDistanceValue) modalDistanceValue.textContent = '---';
-            
+
             // Reset to step 1
             const modalSteps = document.querySelectorAll('#modalStepProgress .step');
             modalSteps.forEach((el, index) => {
@@ -1099,6 +1460,12 @@
     function closeQuoteModal() {
         const modal = document.getElementById('quoteModalOverlay');
         modal.classList.remove('active');
+
+        // Remove comparison widget when modal closes
+        if (window.ComparisonWidget) {
+            window.ComparisonWidget.remove();
+        }
+
         console.log('Quote modal closed');
     }
 

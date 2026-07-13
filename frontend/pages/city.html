@@ -5,101 +5,310 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Car Transport Service</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    crossorigin="anonymous" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap">
+
+  <link rel="stylesheet" href="../css/components/navbar.css" />
+  <link rel="stylesheet" href="../css/components/middle-navbar.css" />
   <link rel="stylesheet" href="../css/components/loading-indicators.css" />
-  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../css/components/glowing-input.css" />
+  <link rel="stylesheet" href="../css/styles.css">
+  <link id="theme-style" rel="stylesheet" href="../css/light-mode.css" />
 
-  <!-- Basic meta -->
-  <meta name="description" content="Car Transport Service - Reliable car shipping across India.">
-  <meta name="keywords" content="car transport, vehicle transport, car movers India">
-
+  <!-- 🌟 Preloader & Theme Meta-Component (Prevents FOUC) -->
+  <link rel="stylesheet" href="../css/components/preloader-meta.css">
+  <script src="../js/modules/preloader-meta.js"></script>
+  <link rel="stylesheet" href="../css/pages/city.css">
+  <!-- 🎨 SUPER-NUCLEAR Style Overrides to kill ANY orange background -->
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f7f7f7;
-      margin: 0;
-      padding: 0;
+    /* Targeting ALL possible containers and pseudo-elements */
+    html,
+    body,
+    main,
+    .city-page-layout,
+    .city-hero,
+    html::before,
+    html::after,
+    body::before,
+    body::after,
+    main::before,
+    main::after {
+      background: #f3f4f7 !important;
+      background-color: #f3f4f7 !important;
+      background-image: none !important;
     }
 
-    header,
-    footer {
-      text-align: center;
-      background: #000;
-      color: #fff;
-      padding: 1rem 0;
+    body.city-page-layout[data-theme="dark"],
+    body.city-page-layout[data-theme="dark"] main,
+    body.city-page-layout[data-theme="dark"] .city-hero {
+      background: #0a0c10 !important;
+      background-color: #0a0c10 !important;
     }
 
-    .city-container {
-      max-width: 900px;
-      margin: 2rem auto;
-      background: #fff;
-      border-radius: 8px;
-      padding: 2rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* Force the card background and remove any inheritance */
+    body.city-page-layout[data-theme="dark"] .city-glass-card {
+      background: rgba(15, 18, 26, 0.9) !important;
     }
 
-    .city-container img {
-      width: 100%;
-      max-height: 400px;
-      object-fit: cover;
-      border-radius: 6px;
+    /* Transition for city rotation */
+    .city-details,
+    .city-image-container {
+      transition: opacity 0.4s ease-in-out;
     }
 
-    .city-container h1 {
-      text-align: center;
-      margin-top: 1rem;
-      color: #333;
-    }
-
-    .city-container p {
-      text-align: center;
-      font-size: 1.1rem;
-      color: #555;
-      line-height: 1.6;
+    .rotating {
+      opacity: 0;
     }
   </style>
+
+  <script src="../js/modules/themes.js"></script>
 </head>
 
-<body>
-  <header>
-    <h2>Car Transport Service 🚗</h2>
-  </header>
+<body class="city-page-layout neon-theme">
+  <div id="scroll-progress"></div>
+  <div id="navbar-container"></div>
 
-  <main class="city-container">
-    <img id="cityImage" src="" alt="City Image">
-    <h1 id="cityTitle">Loading...</h1>
-    <p id="cityDescription">Please wait while we load city details.</p>
+  <main class="city-hero">
+    <div id="city-card" class="city-glass-card no-image">
+      <div class="city-image-container">
+        <div class="image-overlay"></div>
+        <img id="cityImage" src="../assets/images/cities/default.jpg" alt="City Image" class="city-img"
+          onerror="handleImageError()">
+      </div>
+
+      <div class="city-details">
+        <div class="city-badge">Premium Service</div>
+        <h1 id="cityTitle" class="glow-text">Loading...</h1>
+        <div class="city-divider"></div>
+        <p id="cityDescription" class="city-desc">
+          Picking the best service route for you...
+        </p>
+
+        <!-- New Detailed Content Section -->
+        <div id="cityLongContent" class="city-long-content"></div>
+
+        <div class="city-features">
+          <div class="feature-item">
+            <i class="fas fa-shield-alt"></i>
+            <span>Fully Insured</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-truck"></i>
+            <span>Doorstep Delivery</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-clock"></i>
+            <span>24/7 Tracking</span>
+          </div>
+        </div>
+
+        <div class="city-actions">
+          <button class="cta-primary-btn" id="getQuoteBtnHeader">
+            <i class="fas fa-file-invoice-dollar"></i>
+            Get Free Quote
+          </button>
+          <button class="cta-secondary-btn" id="bookNowBtnHeader">
+            <i class="fas fa-calendar-check"></i>
+            Book Now
+          </button>
+        </div>
+      </div>
+    </div>
   </main>
 
-  <footer>
-    <p>© 2025 Car Transport Service. All rights reserved.</p>
-  </footer>
+  <div id="footer-container"></div>
 
   <script>
-    // --- Fetch city from URL ---
-    const params = new URLSearchParams(window.location.search);
-    const citySlug = params.get('city');
+    let allCities = [];
+    let currentRotationIndex = 0;
+    let rotationInterval;
 
-    // --- Load data ---
-    fetch('../assets/data/cities.json')
-      .then(res => res.json())
-      .then(cities => {
-        const city = cities.find(c => c.slug === citySlug);
-        if (city) {
-          document.title = city.name + " | Car Transport Service";
-          document.getElementById('cityTitle').textContent = city.name;
-          document.getElementById('cityDescription').textContent = city.description;
-          document.getElementById('cityImage').src = "../" + city.image;
-        } else {
-          document.getElementById('cityTitle').textContent = "City Not Found";
-          document.getElementById('cityDescription').textContent = "Sorry, the requested city could not be found.";
-          document.getElementById('cityImage').style.display = 'none';
-        }
-      })
-      .catch(() => {
-        document.getElementById('cityTitle').textContent = "Error Loading City Data";
-        document.getElementById('cityDescription').textContent = "Please try again later.";
+    // --- Action Button Handlers ---
+    const getQuoteBtn = document.getElementById('getQuoteBtnHeader');
+    const bookNowBtn = document.getElementById('bookNowBtnHeader');
+
+    if (getQuoteBtn) {
+      getQuoteBtn.addEventListener('click', () => {
+        window.location.href = './pricing-calculator.html';
       });
+    }
+
+    if (bookNowBtn) {
+      bookNowBtn.addEventListener('click', () => {
+        // citySlug is no longer used for booking URL, as rotation is primary
+        window.location.href = `./booking.html`;
+      });
+    }
+
+    async function initializeCityPage() {
+      try {
+        const response = await fetch('../assets/data/cities.json');
+        allCities = await response.json();
+
+        // Get city from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const citySlug = urlParams.get('city');
+
+        let cityToDisplay = allCities[0]; // Default to first city
+
+        if (citySlug) {
+          const foundCity = allCities.find(c => c.slug === citySlug);
+          if (foundCity) {
+            cityToDisplay = foundCity;
+          }
+        }
+
+        // Display the city once and stop
+        updateCityPage(cityToDisplay);
+      } catch (error) {
+        console.error('Initialization error:', error);
+        showGeneralError();
+      }
+    }
+
+    function updateCityPage(data) {
+      if (!data) return;
+      document.title = data.name + " | Car Transport Service";
+      document.getElementById('cityTitle').textContent = data.name;
+      document.getElementById('cityDescription').textContent = data.description;
+
+      const imgEl = document.getElementById('cityImage');
+      const cardEl = document.getElementById('city-card');
+
+      if (!imgEl) return;
+
+      // Priority 1: High-Res External URL
+      if (data.external_url) {
+        imgEl.style.display = 'block';
+        imgEl.src = data.external_url;
+        cardEl.classList.remove('no-image');
+
+        // Priority 2: Local Specific Landmark (Fallback)
+        // Priority 3: Regional Master (Final Fallback)
+        imgEl.onerror = () => {
+          imgEl.src = data.image.startsWith('/') ? `..${data.image}` : data.image;
+          imgEl.onerror = () => {
+            const region = data.region || 'north';
+            imgEl.src = `../assets/images/fallbacks/${region}-india.jpg`;
+            imgEl.onerror = () => {
+              handleImageError();
+            };
+          };
+        };
+      } else if (data.image) {
+        imgEl.style.display = 'block';
+        imgEl.src = data.image.startsWith('/') ? `..${data.image}` : data.image;
+        cardEl.classList.remove('no-image');
+        imgEl.onerror = () => {
+          const region = data.region || 'north';
+          imgEl.src = `../assets/images/fallbacks/${region}-india.jpg`;
+          imgEl.onerror = () => handleImageError();
+        };
+      } else {
+        handleImageError();
+      }
+
+      // Generate the long detailed content (1000 words target)
+      populateDetailedContent(data);
+    }
+
+    function populateDetailedContent(data) {
+      const longContentEl = document.getElementById('cityLongContent');
+      if (!longContentEl) return;
+
+      const cityName = data.name.replace('Car Transport in ', '');
+      const region = data.region || 'North India';
+
+      // Smart Content Factory - Building a detailed 1000-word guide
+      const html = `
+        <div class="service-guide-wrapper">
+          <section class="guide-intro">
+            <h4>Professional Vehicle Relocation in ${cityName}</h4>
+            <p>Moving your vehicle from ${cityName} requires precision, care, and professional handling. At Harihar Car Carriers, we specialize in provide top-tier car transport services tailored to the specific geographical and logistical needs of the ${region} region. Our mission is to ensure that your car reaches its destination in the same condition as it was picked up.</p>
+          </section>
+
+          <section class="guide-process">
+            <h5>Our Transport Process from ${cityName}</h5>
+            <ol>
+              <li><strong>Initial Inspection:</strong> We perform a detailed 20-point inspection of your car in ${cityName} before loading.</li>
+              <li><strong>Secure Packing:</strong> Using premium materials to protect the exterior and interior of your vehicle.</li>
+              <li><strong>Professional Loading:</strong> Our skilled team uses specialized ramps and hydraulic lists for safe loading into our car carriers.</li>
+              <li><strong>Safe Transit:</strong> Your vehicle is transported via a GPS-enabled carrier through optimized routes from ${cityName}.</li>
+            </ol>
+          </section>
+
+          <section class="guide-regional-tips">
+            <h5>Why Choose Us in ${region}?</h5>
+            <p>The ${region} corridor is a critical hub for our transport network. We understand the local traffic patterns and infrastructure of ${cityName}, allowing us to provide faster doorstep pickups compared to standard carriers. Our deep roots in ${region} mean we have established service centers and rest stops specifically for our long-haul trailers.</p>
+          </section>
+
+          <section class="guide-safety">
+            <h5>Safety & Insurance Protocols</h5>
+            <p>Safety is our non-negotiable priority. Every car transport from ${cityName} is covered by comprehensive transit insurance. We use specialized wheel chocks and nylon straps to secure your vehicle within the trailer, preventing any movement during the thousand-mile journey. Our drivers are trained specifically for long-distance vehicle hauling across the diverse Indian terrain.</p>
+          </section>
+
+          <section class="guide-advanced">
+            <h5>Advanced Material Handling</h5>
+            <p>For luxury and vintage cars in ${cityName}, we offer enclosed car carriers that provide a climate-controlled environment. This protects the delicate paintwork and upholstery from the varying weather conditions during the cross-country transit from ${region}. Our loading ramps are precision-engineered to handle low-clearance sports cars with zero risk of undercarriage damage.</p>
+          </section>
+
+          <section class="guide-eco">
+            <h5>Eco-Friendly & Efficient Logistics</h5>
+            <p>Our logistics network in ${region} is optimized using AI-driven route planning. This not only ensures faster delivery times from ${cityName} but also reduces our carbon footprint by minimizing empty miles. We are committed to sustainable transport practices while maintaining the highest speed of service for our clients.</p>
+          </section>
+
+          <section class="guide-routes">
+            <h5>Popular Routes from ${cityName}</h5>
+            <ul class="route-list">
+              <li>${cityName} to Delhi/NCR</li>
+              <li>${cityName} to Mumbai/Pune</li>
+              <li>${cityName} to Bangalore/Hyderabad</li>
+              <li>${cityName} to Ahmedabad/Surat</li>
+            </ul>
+          </section>
+
+          <section class="guide-commitment">
+            <h5>Our Commitment to ${cityName} Customers</h5>
+            <p>As a leading name in Indian car transportation, we bring over a decade of experience to the ${cityName} market. Thousands of families have trusted us to move their most valuable possession. Whether you are moving for a new job, relocating permanently, or sending a car as a gift, our ${cityName} branch is ready to serve you with transparency and dedication.</p>
+          </section>
+        </div>
+      `;
+
+      longContentEl.innerHTML = html;
+    }
+
+    function handleImageError() {
+      const imgEl = document.getElementById('cityImage');
+      const cardEl = document.getElementById('city-card');
+      cardEl.classList.add('no-image');
+      if (imgEl) imgEl.style.display = 'none';
+    }
+
+    function showGeneralError() {
+      document.getElementById("cityTitle").textContent = "Service Available";
+      document.getElementById("cityDescription").textContent = "We serve all of India! Choose your city or get a quote now.";
+      handleImageError();
+    }
+
+    // Start everything
+    initializeCityPage();
   </script>
+
+  <!-- 🌟 Bottom Fixed Action Bar -->
+  <link rel="stylesheet" href="../css/components/footer.css" />
+  <link rel="stylesheet" href="../css/components/sticky-quote-button.css" />
+  <link rel="stylesheet" href="../css/components/quote-modal.css" />
+  <link rel="stylesheet" href="../css/components/bottom-fixed-container.css" />
+
+  <script src="../js/modules/navbar-loader.js?v=2"></script>
+  <script src="../js/modules/modal.js"></script>
+  <script src="../js/modules/quote-modal.js"></script>
+  <script src="../js/modules/footer-loader.js"></script>
+  <script src="../js/modules/themes.js"></script>
+  <!-- Component Initializer - Ensures global components (FAB, Chatbot, etc.) are available -->
+  <script src="../js/modules/component-initializer.js"></script>
 </body>
 
 </html>

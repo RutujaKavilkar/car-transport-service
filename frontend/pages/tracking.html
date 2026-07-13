@@ -4,11 +4,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Track Your Car - Harihar Car Carriers</title>
+  <title>Track Your Vehicle | Harihar Car Carriers</title>
+  <meta name="description"
+    content="Track your car or bike shipment in real-time with Harihar Car Carriers. Enter your tracking ID to see live location and delivery status." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://nikhilrsingh.github.io/car-transport-service/pages/tracking.html" />
+  <base href="./" />
+  <link rel="icon" type="image/png" href="../assets/icons/favicon.png" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../css/styles.css">
+
+  <!-- 🌟 Preloader & Theme Meta-Component (Prevents FOUC) -->
+  <link rel="stylesheet" href="../css/components/preloader-meta.css">
+  <script src="../js/modules/preloader-meta.js"></script>
+
+  <!-- Custom CSS for Tracking Page -->
   <link rel="stylesheet" href="../css/components/tracking.css" />
   <link rel="stylesheet" href="../css/components/navbar.css" />
-  <!-- Loading Indicators CSS -->
+  <link rel="stylesheet" href="../css/components/middle-navbar.css" /> <!-- Loading Indicators CSS -->
   <link rel="stylesheet" href="../css/components/loading-indicators.css" />
   <link rel="stylesheet" href="../css/components/footer.css" />
   <link rel="stylesheet" href="../css/components/floating-button.css" />
@@ -17,13 +30,17 @@
   <link rel="stylesheet" href="../css/components/floating-chatbot-button.css" />
   <link rel="stylesheet" href="../css/components/sticky-quote-button.css" />
   <link rel="stylesheet" href="../css/components/quote-modal.css" />
+  <link rel="stylesheet" href="../css/components/comparison-widget.css" />
   <link rel="stylesheet" href="../css/components/chatbot-modal.css" />
   <link rel="stylesheet" href="../css/components/back-to-top-button.css" />
   <link rel="stylesheet" href="../css/components/backtoBottom.css">
+  <link rel="stylesheet" href="../css/components/glowing-input.css">
+
 
 </head>
 
 <body>
+  <div id="scroll-progress"></div>
   <!-- Navbar Container - Loaded dynamically -->
   <div id="navbar-container"></div>
 
@@ -63,11 +80,11 @@
           </label>
           <div class="input-with-voice">
             <input type="text" id="trackingId" placeholder="Enter your tracking ID or speak it" required />
-            <button type="button" class="voice-search-btn" id="voiceSearchBtn" title="Voice Search">
-              <i class="fas fa-microphone"></i>
+            <button type="button" class="voice-search-btn" id="voiceSearchBtn" aria-label="Start voice search">
+              <i class="fas fa-microphone" aria-hidden="true"></i>
             </button>
           </div>
-          <div class="voice-status" id="voiceStatus">
+          <div class="voice-status" id="voiceStatus" aria-live="polite">
             <div class="voice-indicator">
               <span class="pulse-dot"></span>
               <span class="status-text">Ready for voice input</span>
@@ -119,8 +136,8 @@
             <p id="displayLocation">-</p>
           </div>
           <div class="info-item">
-            <h3><i class="fas fa-tasks"></i> Status</h3>
-            <p><span class="status-badge" id="displayStatus">-</span></p>
+            <h3><i class="fas fa-tasks" aria-hidden="true"></i> Status</h3>
+            <p><span class="status-badge" id="displayStatus" aria-live="polite">-</span></p>
           </div>
           <div class="info-item">
             <h3><i class="fas fa-calendar-check"></i> Estimated Delivery</h3>
@@ -163,7 +180,8 @@
       <!-- Notification Preferences Section -->
       <div id="notificationSection">
         <h3><i class="fas fa-bell"></i> Notification Preferences</h3>
-        <p style="color: #aaa; margin-bottom: 20px;">Choose how you want to receive updates about your shipment</p>
+        <p class="text-muted">Choose how you want to receive updates about your shipment</p>
+
 
         <form id="notificationPreferences">
           <div class="notification-options">
@@ -263,29 +281,37 @@
   <script src="../js/modules/navbar-loader.js?v=2"></script>
   <script src="../js/modules/footer-loader.js"></script>
   <script src="../js/modules/themes.js"></script>
-  <script src="./js/script.js"></script>
   <script src="./js/modules/Services.js"></script>
   <script src="./js/modules/tracking.js"></script>
   <script src="../js/modules/voice-search.js"></script>
-  <script src="../js/modules/floating-book-button.js"></script>
+  <!-- Floating buttons removed - handled by FAB menu in footer -->
+  <!-- <script src="../js/modules/floating-book-button.js"></script>
   <script src="../js/modules/floating-call-button.js"></script>
-  <script src="../js/modules/floating-whatsapp-button.js"></script>
+  <script src="../js/modules/floating-whatsapp-button.js"></script> -->
   <script src="../js/modules/quote-modal.js"></script>
+  <script src="../js/modules/comparison-widget.js"></script>
   <script src="../js/modules/sticky-quote-button.js"></script>
   <script src="../js/modules/floating-chatbot-button.js"></script>
   <script src="../js/modules/chatbot-modal.js"></script>
   <script src="../js/modules/back-to-top-button.js"></script>
   <script src="../js/modules/backtoBottom.js"></script>
-
+  <script src="../js/script.js"></script>
   <!-- Back to Top Button -->
-  <button class="back-to-top" id="backToTop">
-    <i class="fas fa-arrow-up"></i>
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <i class="fas fa-arrow-up" aria-hidden="true"></i>
   </button>
 
   <!-- Top to Bottom Button -->
-  <button class="back-to-bottom" id="backToBottom">
-    <i class="fas fa-arrow-down"></i>
+  <button class="back-to-bottom" id="backToBottom" aria-label="Go to bottom">
+    <i class="fas fa-arrow-down" aria-hidden="true"></i>
   </button>
+
+  <!-- 🌟 Bottom Fixed Action Bar -->
+  <link rel="stylesheet" href="../css/components/footer.css" />
+  <link rel="stylesheet" href="../css/components/sticky-quote-button.css" />
+  <link rel="stylesheet" href="../css/components/quote-modal.css" />
+
+  <!-- 🚀 Floating Action Menu loaded via footer component -->
 
 
 </body>

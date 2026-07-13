@@ -5,472 +5,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About Us | Harihar Car Carriers</title>
+  <meta name="description"
+    content="Learn about Harihar Car Carriers - India's trusted car transport company. Our mission, values, and commitment to safe vehicle transportation." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://nikhilrsingh.github.io/car-transport-service/pages/about.html" />
+  <base href="./" />
+  <link rel="icon" type="image/png" href="../assets/icons/favicon.png" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../css/styles.css">
+
+  <!-- 🌟 Preloader & Theme Meta-Component (Prevents FOUC) -->
+  <link rel="stylesheet" href="../css/components/preloader-meta.css">
+  <script src="../js/modules/preloader-meta.js"></script>
+
   <link rel="stylesheet" href="../css/components/navbar.css" />
+  <link rel="stylesheet" href="../css/components/middle-navbar.css" />
   <!-- Loading Indicators CSS -->
   <link rel="stylesheet" href="../css/components/loading-indicators.css" />
   <link rel="stylesheet" href="../css/components/footer.css" />
-  <link rel="stylesheet" href="../css/components/floating-call-button.css" />
+  <!-- Floating Components CSS -->
+  <link rel="stylesheet" href="../css/components/floating-action-menu.css" />
+  <link rel="stylesheet" href="../css/components/bottom-action-bar.css" />
+  <link rel="stylesheet" href="../css/components/scroll-button.css" />
+  <!-- <link rel="stylesheet" href="../css/components/floating-call-button.css" />
   <link rel="stylesheet" href="../css/components/floating-whatsapp-button.css" />
-  <link rel="stylesheet" href="../css/components/floating-chatbot-button.css" />
   <link rel="stylesheet" href="../css/components/sticky-quote-button.css" />
-  <link rel="stylesheet" href="../css/components/quote-modal.css" />
+  <link rel="stylesheet" href="../css/components/quote-modal.css" /> -->
+  <link rel="stylesheet" href="../css/components/floating-chatbot-button.css" />
   <link rel="stylesheet" href="../css/components/chatbot-modal.css" />
   <link rel="stylesheet" href="../css/components/back-to-top-button.css" />
   <link rel="stylesheet" href="../css/components/backtoBottom.css" />
   <link rel="stylesheet" href="../css/components/about.css" />
   <link rel="stylesheet" href="../css/components/animations.css" />
-  <style>
-    @font-face {
-      font-family: "Poppins";
-      src: url("../assets/fonts/Poppins-Regular.woff2") format("woff2"),
-        url("../assets/fonts/Poppins-Regular.woff") format("woff");
-      font-weight: 400;
-      font-style: normal;
-    }
-
-    @font-face {
-      font-family: "Poppins";
-      src: url("../assets/fonts/Poppins-Bold.woff2") format("woff2"),
-        url("../assets/fonts/Poppins-Bold.woff") format("woff");
-      font-weight: 700;
-      font-style: normal;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: "Poppins", sans-serif;
-      height: 100%;
-      width: 100%;
-      background-color: #2b2b2b;
-      color: white;
-      line-height: 1.6;
-      padding-top: 80px;
-      /* Add padding for fixed navbar */
-    }
-
-    .page-content {
-      width: 100%;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    /* Hero Section */
-    .hero {
-      padding: 100px 0 80px;
-      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-        url("https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80");
-      background-size: cover;
-      background-position: center;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero h1 {
-      font-size: 3.5rem;
-      margin-bottom: 20px;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    }
-
-    .hero p {
-      font-size: 1.3rem;
-      max-width: 700px;
-      margin: 0 auto 30px;
-      opacity: 0.9;
-    }
-
-    .hero-btn {
-      display: inline-block;
-      background-color: #ff6347;
-      color: white;
-      padding: 12px 30px;
-      border-radius: 4px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .hero-btn:hover {
-      background-color: #ff4500;
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    /* About Section */
-    .about {
-      padding: 100px 0;
-      background-color: rgba(15, 15, 15, 0.2);
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .section-divider {
-      width: 100%;
-      height: 2px;
-      background-color: #444;
-      margin: 50px 0;
-    }
-
-
-    .section-title h2 {
-      font-size: 2.5rem;
-      margin-bottom: 15px;
-
-      text-decoration: underline;
-      text-shadow: 0 0 10px rgba(255, 99, 71, 0.6);
-      /* glow effect */
-      color: #ff8667;
-      /* lighter shade on hover */
-      transition: all 0.3s ease-in-out;
-    }
-
-    .section-title p {
-      color: #ccc;
-      max-width: 600px;
-      margin: 0 auto;
-      text-align: center;
-      line-height: 1.8;
-      /* increased from default line-height */
-      margin-bottom: 18px;
-    }
-
-    .about-content {
-      display: flex;
-      align-items: center;
-      gap: 50px;
-    }
-
-    .about-text {
-      flex: 1;
-    }
-
-    .about-text h3 {
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      color: #ff6347;
-      transition: color 0.3s ease, text-shadow 0.3s ease;
-    }
-
-    .about-text p {
-      margin-bottom: 20px;
-      color: #ccc;
-    }
-
-    .about-image {
-      flex: 1;
-      border-radius: 50%;
-      overflow: hidden;
-      box-shadow: inset 1px 1px 20px 30px rgba(0, 0, 0, 0.3);
-      /* box-shadow: 0 15px 30px 10px rgba(0, 0, 0, 0.3); */
-      background: radial-gradient(rgba(255, 255, 255, 0.512), rgba(246, 246, 81, 0.216), rgb(15, 15, 15));
-      transition: all 0.4s ease;
-
-    }
-
-    .about-image:hover {
-
-      transform: scale(1.05);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    }
-
-    .about-image img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    /* Values Section */
-    .values {
-      padding: 100px 0;
-      background-color: #2b2b2b;
-    }
-
-    .values-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-    }
-
-    .value-card {
-      background-color: #333;
-      padding: 40px 30px;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-      transition: all 0.4s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .value-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    .value-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 5px;
-      background: #ff6347;
-    }
-
-    .value-icon {
-      width: 80px;
-      height: 80px;
-      background: #ff6347;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-      color: white;
-      font-size: 30px;
-    }
-
-    .value-card h3 {
-      font-size: 1.5rem;
-      margin-bottom: 15px;
-      color: white;
-    }
-
-    .value-card p {
-      color: #ccc;
-    }
-
-    /* Team Section */
-    .team {
-      padding: 100px 0;
-      background-color: #333;
-    }
-
-    .team-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 30px;
-    }
-
-    .team-member {
-      background-color: #2b2b2b;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      transition: all 0.4s ease;
-      position: relative;
-    }
-
-    .team-member:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    .member-image {
-      height: 300px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .member-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: all 0.4s ease;
-    }
-
-    .team-member:hover .member-image img {
-      transform: scale(1.1);
-    }
-
-    .member-info {
-      padding: 25px;
-      text-align: center;
-    }
-
-    .member-info h3 {
-      font-size: 1.3rem;
-      margin-bottom: 5px;
-      color: white;
-    }
-
-    .member-info p {
-      color: #ff6347;
-      font-weight: 500;
-      margin-bottom: 15px;
-    }
-
-    .member-social {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-    }
-
-    .member-social a {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background-color: #444;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      transition: all 0.3s ease;
-    }
-
-    .member-social a:hover {
-      background-color: #ff6347;
-      transform: translateY(-3px);
-    }
-
-    /* Stats Section */
-    .stats {
-      padding: 80px 0;
-      background: linear-gradient(rgba(255, 99, 71, 0.9),
-          rgba(255, 69, 0, 0.9)),
-        url("../assets/images/left-logo-w-bt.png");
-      background-size: cover;
-      background-position: center;
-      color: white;
-      text-align: center;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 30px;
-    }
-
-    .stat-item h3 {
-      font-size: 3rem;
-      margin-bottom: 10px;
-    }
-
-    .stat-item p {
-      font-size: 1.1rem;
-      opacity: 0.9;
-    }
-
-    /* CTA Section */
-    .cta {
-      padding: 100px 0;
-      background-color: #2b2b2b;
-      text-align: center;
-    }
-
-    .cta h2 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      color: white;
-    }
-
-    .cta p {
-      max-width: 600px;
-      margin: 0 auto 30px;
-      color: #ccc;
-    }
-
-    .cta-btn {
-      display: inline-block;
-      background: #ff6347;
-      color: white;
-      padding: 15px 40px;
-      border-radius: 4px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1.1rem;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(255, 99, 71, 0.3);
-    }
-
-    .cta-btn:hover {
-      background: #ff4500;
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(255, 99, 71, 0.4);
-    }
-
-    /* Animations */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes fall {
-      to {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
-
-    .fade-in {
-      opacity: 0;
-      animation: fadeInUp 0.8s ease forwards;
-    }
-
-    .delay-1 {
-      animation-delay: 0.2s;
-    }
-
-    .delay-2 {
-      animation-delay: 0.4s;
-    }
-
-    .delay-3 {
-      animation-delay: 0.6s;
-    }
-
-    /* Responsive Design */
-    @media (max-width: 992px) {
-      .about-content {
-        flex-direction: column;
-      }
-
-      .hero h1 {
-        font-size: 2.8rem;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .hero h1 {
-        font-size: 2.2rem;
-      }
-
-      .section-title h2 {
-        font-size: 2rem;
-      }
-
-      body {
-        padding-top: 70px;
-        /* Adjust for mobile navbar */
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="../css/components/bottom-fixed-container.css">
   <link rel="stylesheet" href="../css/components/floating-button.css" />
+  <link rel="stylesheet" href="../css/pages/about.css">
+  <link rel="stylesheet" href="../css/light-mode.css" />
+  <link rel="stylesheet" href="../css/dark-mode.css" />
 </head>
 
 <body>
+  <div id="scroll-progress"></div>
   <!-- Navbar Container - Loaded dynamically -->
   <div id="navbar-container"></div>
 
   <!-- Hero Section -->
-  <section class="hero">
+  <section class="hero has-bg-image">
     <div class="container">
       <h1 class="fade-in">Our Journey</h1>
       <p class="fade-in delay-1">
@@ -482,45 +62,86 @@
     </div>
   </section>
 
-  <!-- About Section -->
-  <section class="about">
+  <!-- Advanced About Section (Elite UI) -->
+  <section class="about-elite">
+    <div class="mesh-background"></div>
     <div class="container">
-      <div class="section-title fade-in">
-        <div class="section-divider">
+      <div class="elite-grid">
+        <!-- Text & Logic Column -->
+        <div class="elite-content-column fade-in">
+          <div class="elite-header">
+            <span class="elite-eyebrow">Pioneering Excellence</span>
+            <h2>Redefining the <span class="accent-text">Standard</span> of Vehicle Logistics</h2>
+            <p class="elite-lead">
+              Founded in 2012, Harihar Car Carriers has evolved from a local carrier into an architectural force in
+              Indian vehicle transportation. We don't just move machines; we orchestrate trust.
+            </p>
+          </div>
 
-          <h2>About Harihar Car Carriers</h2>
+          <div class="logic-panes">
+            <div class="logic-pane glass-card" data-tilt>
+              <div class="pane-icon primary"><i class="fas fa-microchip" aria-hidden="true"></i></div>
+              <div class="pane-body">
+                <h3>Our Mission</h3>
+                <p>Engineering the future of cargo security through proprietary safety protocols and obsessive
+                  precision.</p>
+                <div class="pane-footer">
+                  <span class="mini-stat">EFFICIENCY: 98%</span>
+                  <div class="mini-bar">
+                    <div class="fill" style="width: 98%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="logic-pane glass-card" data-tilt>
+              <div class="pane-icon secondary"><i class="fas fa-shield-halved" aria-hidden="true"></i></div>
+              <div class="pane-body">
+                <h3>Our Vision</h3>
+                <p>To be the definitive gold standard in professional logistics, recognized for zero-compromise
+                  reliability.</p>
+                <div class="pane-footer">
+                  <span class="mini-stat">RELIABILITY: 100%</span>
+                  <div class="mini-bar">
+                    <div class="fill" style="width: 100%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="elite-stats-row">
+            <div class="e-stat">
+              <span class="val">12+</span>
+              <span class="lab">Years Active</span>
+            </div>
+            <div class="e-stat">
+              <span class="val">500+</span>
+              <span class="lab">Cities Covered</span>
+            </div>
+            <div class="e-stat">
+              <span class="val">99%</span>
+              <span class="lab">Safe Delivery</span>
+            </div>
+          </div>
         </div>
-        <br>
-        <p>
-          <bold>
-            Your trusted partner for safe and reliable vehicle transportation
-            across India
-          </bold>
 
-        </p>
-      </div>
-      <div class="about-content">
-        <div class="about-text fade-in">
-          <h3>Transporting Your Vehicles with Care</h3>
-          <p>
-            Founded with a vision to revolutionize vehicle transportation in
-            India, Harihar Car Carriers has grown from a small local service
-            to a nationwide network trusted by thousands of customers.
-          </p>
-          <p>
-            We understand that your vehicle is more than just transportation -
-            it's an investment and often a cherished possession. That's why we
-            treat every vehicle with the utmost care and professionalism.
-          </p>
-          <p>
-            Our team of experienced drivers and logistics experts work around
-            the clock to ensure your vehicle reaches its destination safely
-            and on time, whether it's across the city or across the country.
-          </p>
-        </div>
-        <div class="about-image fade-in delay-1">
-          <img src="../assets/images/left-logo-w-bt.png" alt="Our Car Carrier Fleet" />
-
+        <!-- Holographic Visual Column -->
+        <div class="elite-visual-column fade-in delay-1">
+          <div class="hologram-stage">
+            <div class="hologram-beams"></div>
+            <div class="nested-rings">
+              <div class="ring r-outer"></div>
+              <div class="ring r-middle"></div>
+              <div class="ring r-inner"></div>
+            </div>
+            <div class="projection-core">
+              <div class="core-logo">
+                <img src="../assets/images/left-logo-w-bt.png" alt="Harihar Car Carriers" />
+              </div>
+            </div>
+            <div class="hologram-shadow"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -537,7 +158,7 @@
         <div class="value-card reveal-on-scroll">
           <div class="value-icon-wrapper">
             <div class="value-icon-morph">
-              <i class="fas fa-shield-alt"></i>
+              <i class="fas fa-shield-alt" aria-hidden="true"></i>
             </div>
           </div>
           <h3>Safety First</h3>
@@ -551,7 +172,7 @@
         <div class="value-card reveal-on-scroll">
           <div class="value-icon-wrapper">
             <div class="value-icon-morph">
-              <i class="fas fa-clock"></i>
+              <i class="fas fa-clock" aria-hidden="true"></i>
             </div>
           </div>
           <h3>Timely Delivery</h3>
@@ -565,7 +186,7 @@
         <div class="value-card reveal-on-scroll">
           <div class="value-icon-wrapper">
             <div class="value-icon-morph">
-              <i class="fas fa-handshake"></i>
+              <i class="fas fa-handshake" aria-hidden="true"></i>
             </div>
           </div>
           <h3>Customer Trust</h3>
@@ -579,7 +200,7 @@
         <div class="value-card reveal-on-scroll">
           <div class="value-icon-wrapper">
             <div class="value-icon-morph">
-              <i class="fas fa-leaf"></i>
+              <i class="fas fa-leaf" aria-hidden="true"></i>
             </div>
           </div>
           <h3>Eco-Friendly</h3>
@@ -593,7 +214,7 @@
         <div class="value-card reveal-on-scroll">
           <div class="value-icon-wrapper">
             <div class="value-icon-morph">
-              <i class="fas fa-headset"></i>
+              <i class="fas fa-headset" aria-hidden="true"></i>
             </div>
           </div>
           <h3>24/7 Support</h3>
@@ -607,7 +228,7 @@
         <div class="value-card reveal-on-scroll">
           <div class="value-icon-wrapper">
             <div class="value-icon-morph">
-              <i class="fas fa-certificate"></i>
+              <i class="fas fa-certificate" aria-hidden="true"></i>
             </div>
           </div>
           <h3>Quality Assurance</h3>
@@ -679,10 +300,17 @@
             <!-- Back of Card -->
             <div class="about-team-flip-card-back">
               <h3 style="color: #fff; margin-bottom: 15px;">Rajesh Sharma</h3>
-              <p class="about-member-bio">
-                With over 15 years of experience in logistics, Rajesh founded Harihar Car Carriers with a vision to
-                revolutionize vehicle transportation in India.
-              </p>
+              <div class="about-member-bio">
+                <p style="margin-bottom: 12px;">
+                  <strong>Visionary Leader & Industry Pioneer</strong> — With over <em>15 years of transformative experience</em> in logistics, Rajesh founded Harihar Car Carriers with an ambitious vision to revolutionize vehicle transportation across India.
+                </p>
+                <p style="margin-bottom: 12px;">
+                  His strategic leadership and deep industry insights have transformed the company from a humble local startup into a <strong>national logistics powerhouse</strong> serving 500+ cities. Rajesh's unwavering commitment to innovation and customer satisfaction drives every aspect of our operations.
+                </p>
+                <p style="margin-bottom: 8px; font-size: 0.95em; opacity: 0.95;">
+                  <strong>Key Achievements:</strong> Under his guidance, we've achieved industry-leading safety standards, pioneered GPS-enabled tracking systems, and established strategic partnerships with major automotive manufacturers. His philosophy of "Safety First, Service Always" has become the cornerstone of our organizational culture.
+                </p>
+              </div>
               <ul class="about-member-highlights">
                 <li>IIM Ahmedabad Alumni</li>
                 <li>15+ Years in Logistics</li>
@@ -690,10 +318,10 @@
                 <li>Industry Speaker</li>
               </ul>
               <div class="about-member-social-icons">
-                <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="social-icon"><i class="fas fa-envelope"></i></a>
-                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="about-social-icon" aria-label="LinkedIn profile of Rajesh Sharma"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                <a href="#" class="about-social-icon" aria-label="Twitter profile of Rajesh Sharma"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                <a href="#" class="about-social-icon" aria-label="Email Rajesh Sharma"><i class="fas fa-envelope" aria-hidden="true"></i></a>
+                <a href="#" class="about-social-icon" aria-label="Instagram profile of Rajesh Sharma"><i class="fab fa-instagram" aria-hidden="true"></i></a>
               </div>
             </div>
           </div>
@@ -746,10 +374,17 @@
 
             <div class="about-team-flip-card-back">
               <h3 style="color: #fff; margin-bottom: 15px;">Priya Patel</h3>
-              <p class="about-member-bio">
-                Priya streamlines our operations with precision and dedication, ensuring every vehicle is transported
-                safely and efficiently.
-              </p>
+              <div class="about-member-bio">
+                <p style="margin-bottom: 12px;">
+                  <strong>Operations Excellence & Process Innovation</strong> — Priya orchestrates our operations with <em>surgical precision and unwavering dedication</em>, ensuring every vehicle is transported safely and efficiently across our vast network.
+                </p>
+                <p style="margin-bottom: 12px;">
+                  Her groundbreaking expertise in process optimization has <strong>reduced delivery times by 25%</strong> while maintaining our exceptional 99% safety record. With an MBA in Operations and Six Sigma Black Belt certification, she implements cutting-edge, data-driven strategies that maximize fleet utilization and minimize operational costs.
+                </p>
+                <p style="margin-bottom: 8px; font-size: 0.95em; opacity: 0.95;">
+                  <strong>Innovation Impact:</strong> Priya's systematic approach ensures seamless coordination across all regional hubs, pioneering automated workflow systems and real-time performance dashboards that have set new industry benchmarks for operational efficiency.
+                </p>
+              </div>
               <ul class="about-member-highlights">
                 <li>MBA in Operations</li>
                 <li>10+ Years Experience</li>
@@ -757,10 +392,10 @@
                 <li>Process Optimization Expert</li>
               </ul>
               <div class="about-member-social-icons">
-                <a href="#" class="about-social-icon"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#" class="about-social-icon"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="about-social-icon"><i class="fas fa-envelope"></i></a>
-                <a href="#" class="about-social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="about-social-icon" aria-label="LinkedIn profile of Priya Patel"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                <a href="#" class="about-social-icon" aria-label="Twitter profile of Priya Patel"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                <a href="#" class="about-social-icon" aria-label="Email Priya Patel"><i class="fas fa-envelope" aria-hidden="true"></i></a>
+                <a href="#" class="about-social-icon" aria-label="Instagram profile of Priya Patel"><i class="fab fa-instagram" aria-hidden="true"></i></a>
               </div>
             </div>
           </div>
@@ -813,9 +448,17 @@
 
             <div class="about-team-flip-card-back">
               <h3 style="color: #fff; margin-bottom: 15px;">Vikram Singh</h3>
-              <p class="about-member-bio">
-                Vikram's expertise in route optimization and fleet management ensures timely delivery across the nation.
-              </p>
+              <div class="about-member-bio">
+                <p style="margin-bottom: 12px;">
+                  <strong>Logistics Mastermind & Route Architect</strong> — Vikram's unparalleled expertise in route optimization and fleet management ensures <em>timely delivery across every corner</em> of the nation, from bustling metros to remote villages.
+                </p>
+                <p style="margin-bottom: 12px;">
+                  With <strong>12+ years of logistics mastery</strong>, he has built an extensive, resilient network spanning major cities and remote locations alike. His innovative approach to route planning leverages cutting-edge GPS tracking and AI-powered predictive analytics to minimize transit times, reduce fuel consumption by 20%, and ensure optimal vehicle safety.
+                </p>
+                <p style="margin-bottom: 8px; font-size: 0.95em; opacity: 0.95;">
+                  <strong>Leadership Philosophy:</strong> Vikram personally oversees comprehensive training programs for our 200+ driver teams, ensuring they embody the highest standards of professionalism, defensive driving techniques, and meticulous vehicle care protocols.
+                </p>
+              </div>
               <ul class="about-member-highlights">
                 <li>Logistics Professional</li>
                 <li>12+ Years in Industry</li>
@@ -823,10 +466,10 @@
                 <li>National Network Builder</li>
               </ul>
               <div class="about-member-social-icons">
-                <a href="#" class="about-social-icon"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#" class="about-social-icon"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="about-social-icon"><i class="fas fa-envelope"></i></a>
-                <a href="#" class="about-social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="about-social-icon" aria-label="LinkedIn profile of Vikram Singh"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                <a href="#" class="about-social-icon" aria-label="Twitter profile of Vikram Singh"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                <a href="#" class="about-social-icon" aria-label="Email Vikram Singh"><i class="fas fa-envelope" aria-hidden="true"></i></a>
+                <a href="#" class="about-social-icon" aria-label="Instagram profile of Vikram Singh"><i class="fab fa-instagram" aria-hidden="true"></i></a>
               </div>
             </div>
           </div>
@@ -879,10 +522,17 @@
 
             <div class="about-team-flip-card-back">
               <h3 style="color: #fff; margin-bottom: 15px;">Anjali Mehta</h3>
-              <p class="about-member-bio">
-                Anjali builds lasting relationships with our clients, ensuring exceptional service and satisfaction at
-                every step.
-              </p>
+              <div class="about-member-bio">
+                <p style="margin-bottom: 12px;">
+                  <strong>Customer Experience Champion & Relationship Builder</strong> — Anjali cultivates lasting, meaningful relationships with our clients, ensuring <em>exceptional service and genuine satisfaction</em> at every touchpoint of their journey with us.
+                </p>
+                <p style="margin-bottom: 12px;">
+                  Her empathetic approach and outstanding communication prowess have earned us a remarkable <strong>98% customer satisfaction rating</strong> and industry-leading retention rates. With 8+ years of excellence in customer relations, she leads a passionate, dedicated support team that provides round-the-clock assistance throughout each vehicle's journey.
+                </p>
+                <p style="margin-bottom: 8px; font-size: 0.95em; opacity: 0.95;">
+                  <strong>Service Excellence:</strong> Anjali's proactive problem-solving abilities, combined with her genuine care for customer needs and personalized attention to detail, make her the beating heart of our client experience and the voice customers trust.
+                </p>
+              </div>
               <ul class="about-member-highlights">
                 <li>Customer Service Expert</li>
                 <li>8+ Years Experience</li>
@@ -890,10 +540,10 @@
                 <li>Relationship Manager</li>
               </ul>
               <div class="about-member-social-icons">
-                <a href="#" class="about-social-icon"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#" class="about-social-icon"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="about-social-icon"><i class="fas fa-envelope"></i></a>
-                <a href="#" class="about-social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="about-social-icon" aria-label="LinkedIn profile of Anjali Mehta"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                <a href="#" class="about-social-icon" aria-label="Twitter profile of Anjali Mehta"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                <a href="#" class="about-social-icon" aria-label="Email Anjali Mehta"><i class="fas fa-envelope" aria-hidden="true"></i></a>
+                <a href="#" class="about-social-icon" aria-label="Instagram profile of Anjali Mehta"><i class="fab fa-instagram" aria-hidden="true"></i></a>
               </div>
             </div>
           </div>
@@ -1035,7 +685,6 @@
             </div>
             <div class="infographic-bar">
               <div class="infographic-bar-fill" data-percentage="96">
-                <span class="percentage-value">96%</span>
               </div>
             </div>
           </div>
@@ -1047,7 +696,6 @@
             </div>
             <div class="infographic-bar">
               <div class="infographic-bar-fill" data-percentage="92">
-                <span class="percentage-value">92%</span>
               </div>
             </div>
           </div>
@@ -1059,7 +707,6 @@
             </div>
             <div class="infographic-bar">
               <div class="infographic-bar-fill" data-percentage="99">
-                <span class="percentage-value">99%</span>
               </div>
             </div>
           </div>
@@ -1071,7 +718,6 @@
             </div>
             <div class="infographic-bar">
               <div class="infographic-bar-fill" data-percentage="85">
-                <span class="percentage-value">85%</span>
               </div>
             </div>
           </div>
@@ -1245,16 +891,7 @@
 
   </section>
 
-  <!-- CTA Section -->
-  <section class="cta">
-    <div class="container">
-      <h2 class="fade-in">Ready to Transport Your Vehicle?</h2>
-      <p class="fade-in delay-1">
-        Get a free, no-obligation quote for your vehicle transportation needs.
-      </p>
-      <a href="../pages/booking.html" class="cta-btn fade-in delay-2">Get Quotation</a>
-    </div>
-  </section>
+
 
   <!-- Footer -->
   <div id="footer-container"></div>
@@ -1266,29 +903,36 @@
   <script src="../js/modules/page-navigation-loader.js"></script>
   <script src="../js/modules/navbar-loader.js?v=2"></script>
   <script src="../js/modules/footer-loader.js"></script>
+  <!-- Component Initializer - Ensures floating menus are available -->
+  <script src="../js/modules/component-initializer.js"></script>
   <script src="../js/modules/themes.js"></script>
   <script src="../js/script.js"></script>
   <script src="../js/modules/about-animations.js"></script>
-  <script src="../js/modules/floating-book-button.js"></script>
-  <script src="../js/modules/floating-call-button.js"></script>
-  <script src="../js/modules/floating-whatsapp-button.js"></script>
-  <script src="../js/modules/quote-modal.js"></script>
-  <script src="../js/modules/sticky-quote-button.js"></script>
+  <!-- <script src="../js/modules/floating-book-button.js"></script> -->
+  <!-- <script src="../js/modules/floating-call-button.js"></script>
+  <script src="../js/modules/floating-whatsapp-button.js"></script> -->
+  <!-- <script src="../js/modules/sticky-quote-button.js"></script> -->
   <script src="../js/modules/floating-chatbot-button.js"></script>
   <script src="../js/modules/chatbot-modal.js"></script>
   <script src="../js/modules/back-to-top-button.js"></script>
   <script src="../js/modules/backtoBottom.js"></script>
   <script src="../js/modules/scroll-animations.js"></script>
+  <script src="../js/modules/modal.js"></script>
+  <!-- <script src="../js/modules/quote-modal.js"></script> -->
+  <script src="../js/modules/bottom-fixed-loader.js"></script>
+
 
   <!-- Back to Top Button -->
-  <button class="back-to-top" id="backToTop">
-    <i class="fas fa-arrow-up"></i>
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <i class="fas fa-arrow-up" aria-hidden="true"></i>
   </button>
 
   <!-- Top to Bottom Button -->
-  <button class="back-to-bottom" id="backToBottom">
-    <i class="fas fa-arrow-down"></i>
+  <button class="back-to-bottom" id="backToBottom" aria-label="Go to bottom">
+    <i class="fas fa-arrow-down" aria-hidden="true"></i>
   </button>
+
+  <!-- 🚀 Floating Action Menu loaded via footer component -->
 </body>
 
 </html>

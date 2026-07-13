@@ -1,0 +1,554 @@
+/* Blog Page Specific Styles */
+
+/* 1. DEFINE THEME VARIABLES */
+:root {
+  --orange: #ff6347;
+  --radius: 12px;
+}
+
+/* Default (Dark Mode) or fallback */
+body {
+  --blog-bg: #1a1a1a;
+  --blog-text: #ffffff;
+  --blog-muted: #d2d2d2;
+  --blog-card-bg: #2b2b2b;
+  --blog-input-bg: #2b2b2b;
+  --blog-input-text: #ffffff;
+  --blog-pill-bg: #333333;
+  --blog-pill-text: #ffffff;
+  --blog-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Light Mode Overrides */
+body[data-theme="light"] {
+  --blog-bg: #f9f9f9;
+  --blog-text: #1a1a1a;
+  --blog-muted: #666666;
+  --blog-card-bg: #ffffff;
+  --blog-input-bg: #ffffff;
+  --blog-input-text: #333333;
+  --blog-pill-bg: #ffffff;
+  --blog-pill-text: #444444;
+  --blog-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Dark Mode Explicit Overrides (matches default but good for specificity) */
+body[data-theme="dark"] {
+  --blog-bg: #1a1a1a;
+  --blog-text: #ffffff;
+  --blog-muted: #d2d2d2;
+  --blog-card-bg: #2b2b2b;
+  --blog-input-bg: #262626;
+  --blog-input-text: #ffffff;
+  --blog-pill-bg: #262626;
+  --blog-pill-text: #e0e0e0;
+  --blog-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Base body styling so all sections inherit colors */
+body {
+  background: var(--blog-bg);
+  color: var(--blog-text);
+}
+
+/* 2. BASE LAYOUT */
+.blog-hero {
+  position: relative;
+  padding: 180px 20px 120px !important;
+  /* Increased bottom padding for more space */
+  background: linear-gradient(135deg, #ff8c5a 0%, #ff6b35 100%) !important;
+  text-align: center !important;
+  color: white !important;
+  overflow: hidden;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.blog-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.15)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,144C960,149,1056,139,1152,128C1248,117,1344,107,1392,101.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') bottom center no-repeat;
+  background-size: cover;
+  opacity: 0.2;
+  z-index: 1;
+}
+
+.blog-hero .hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin-bottom: 30px;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 15px;
+}
+
+.blog-hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.2rem) !important;
+  font-weight: 600 !important;
+  color: white !important;
+  margin-bottom: 0;
+  background: none !important;
+  -webkit-text-fill-color: initial !important;
+  text-shadow: none !important;
+}
+
+.blog-hero p {
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-size: 1.15rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* 3. CONTROLS HEADER */
+.blog-controls-header {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1200px;
+  margin: 10px auto 0;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  align-items: center;
+}
+
+/* SEARCH BAR */
+.search-bar-container {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+}
+
+.blog-search-input {
+  width: 100%;
+  padding: 18px 60px 18px 30px;
+  border-radius: 50px;
+  border: none !important;
+  background: white !important;
+  color: #333 !important;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.blog-search-input:focus {
+  outline: none;
+  box-shadow: 0 8px 30px rgba(255, 107, 53, 0.25) !important;
+}
+
+.search-icon-btn {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  /* Removed orange background */
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  color: var(--orange);
+  /* Icon color is now orange */
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  /* Removed shadow */
+}
+
+.search-icon-btn:hover {
+  transform: translateY(-50%) scale(1.1);
+  color: #e55a40;
+}
+
+/* PILL NAVIGATION - CLEAN OUTLINE STYLE */
+.category-pills {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.pill {
+  padding: 10px 24px;
+  border-radius: 50px;
+  background: white !important;
+  color: #333 !important;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  /* Better visibility */
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+.read-time-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 99, 71, 0.08) !important;
+  color: #ff6347 !important;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 99, 71, 0.15);
+}
+
+body[data-theme="light"] .pill {
+  border-color: #ddd;
+  color: #666;
+}
+
+/* Hover Effect */
+.pill:hover {
+  transform: translateY(-2px);
+  color: var(--orange);
+  border-color: var(--orange);
+  background: rgba(255, 99, 71, 0.05);
+  box-shadow: 0 5px 15px rgba(255, 99, 71, 0.15);
+}
+
+/*
+ * Fix #1050: Global button::before dark gradient in styles.css becomes
+ * visible on hover because .pill:hover sets a near-transparent background.
+ * Suppress the pseudo-element and enforce an opaque white background
+ * specifically for pills inside the orange blog hero.
+ */
+.blog-hero .pill::before {
+  display: none !important;
+}
+
+.blog-hero .pill:hover {
+  background: white !important;
+  color: #e8521a !important;
+  border-color: white !important;
+}
+
+/* Active State */
+.pill.active {
+  background: linear-gradient(135deg, #ff6347, #ff4500);
+  color: white;
+  box-shadow: 0 8px 20px rgba(255, 99, 71, 0.4);
+  border-color: transparent;
+}
+
+.pill-count {
+  padding: 0 4px;
+  font-size: 0.8rem;
+  opacity: 0.7;
+  background: transparent;
+  /* Removed gray background */
+}
+
+.pill.active .pill-count {
+  opacity: 1;
+  color: white;
+}
+
+/* Clear Filter Button */
+.clear-filters-btn {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 50px;
+  color: var(--blog-muted);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  display: none;
+  opacity: 0.7;
+}
+
+.clear-filters-btn:hover {
+  color: var(--orange);
+  opacity: 1;
+}
+
+.clear-filters-btn.visible {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 0.7;
+    transform: translateY(0);
+  }
+}
+
+/* 4. BLOG GRID - CENTERED */
+.blog-main {
+  padding: 80px 20px 100px;
+  /* Increased top padding significantly for extra space */
+  max-width: 1400px;
+  margin: auto;
+}
+
+.blog-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+}
+
+/* CARD STYLES */
+.card {
+  background: rgba(255, 107, 53, 0.05) !important;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 380px;
+  max-width: 100%;
+  border: 1px solid rgba(255, 107, 53, 0.1);
+  border-left: 6px solid #ff6347;
+}
+
+body[data-theme="light"] .card {
+  background: #fffafa !important;
+  border-color: rgba(255, 107, 53, 0.15);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(255, 107, 53, 0.15);
+  border-color: #ff6347;
+}
+
+/* BOOKMARK BUTTON */
+.bookmark-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  color: white;
+}
+
+.bookmark-btn:hover {
+  background: white;
+  transform: scale(1.1);
+  color: var(--orange);
+}
+
+.bookmark-btn.bookmarked {
+  background: white;
+  color: var(--orange);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-figure {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+}
+
+.card-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card:hover .card-figure img {
+  transform: scale(1.1);
+}
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+}
+
+.card:hover .card-overlay {
+  opacity: 1;
+}
+
+.overlay-info {
+  color: white;
+  font-size: 0.9rem;
+  display: flex;
+  gap: 15px;
+}
+
+.card-body {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 12px;
+  color: var(--blog-text);
+}
+
+.category-badges {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.category-badge {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: rgba(255, 99, 71, 0.15);
+  color: var(--orange);
+}
+
+.card-title {
+  font-size: 1.4rem;
+  color: var(--blog-text);
+  line-height: 1.3;
+  margin: 0;
+}
+
+.card-meta {
+  font-size: 0.9rem;
+  color: var(--blog-muted);
+  display: flex;
+  gap: 15px;
+}
+
+.card-excerpt {
+  color: var(--blog-muted);
+  line-height: 1.6;
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-actions {
+  margin-top: auto;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+}
+
+body[data-theme="light"] .card-actions {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.btn-read-more {
+  color: var(--orange);
+  text-decoration: none;
+  font-weight: 600;
+  transition: gap 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-read-more:hover {
+  gap: 8px;
+}
+
+/* NO RESULTS & TRENDING */
+.no-results-state {
+  width: 100%;
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 16px;
+  border: 1px dashed #444;
+}
+
+body[data-theme="light"] .no-results-state {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: #ddd;
+}
+
+.no-results-icon {
+  font-size: 3rem;
+  color: var(--blog-muted);
+  margin-bottom: 20px;
+}
+
+.recommendations-title {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  color: var(--blog-muted);
+  text-align: left;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .blog-hero h1 {
+    font-size: 2rem;
+  }
+
+  .search-bar-container {
+    max-width: 100%;
+  }
+
+  .blog-search-input {
+    padding: 15px 50px 15px 20px;
+  }
+
+  .card-figure {
+    height: 200px;
+  }
+
+  .blog-controls-header {
+    padding: 0 15px;
+  }
+}
