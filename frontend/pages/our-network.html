@@ -7,18 +7,93 @@
     <meta name="description"
         content="Explore Harihar Car Carriers' network of offices across India. Fast coordination, reliable service, and seamless customer support.">
     <title>Our Network - Car Transport Service</title>
+    <base href="./" />
+    <link rel="icon" type="image/png" href="../assets/icons/favicon.png" />
     <link rel="stylesheet" href="../css/styles.css">
+
+    <!-- 🌟 Preloader & Theme Meta-Component (Prevents FOUC) -->
+    <link rel="stylesheet" href="../css/components/preloader-meta.css">
+    <script src="../js/modules/preloader-meta.js"></script>
+
     <link rel="stylesheet" href="../css/components/header.css">
     <link rel="stylesheet" href="../css/components/navbar.css" />
+    <link rel="stylesheet" href="../css/components/middle-navbar.css" />
     <!-- Loading Indicators CSS -->
     <link rel="stylesheet" href="../css/components/loading-indicators.css" />
     <link rel="stylesheet" href="../css/components/footer.css">
     <link rel="stylesheet" href="../css/components/network.css">
+    <link rel="stylesheet" href="../css/components/region-enhanced.css">
+    <link rel="stylesheet" href="../css/components/map-enhancements.css">
     <link rel="stylesheet" href="../css/components/animations.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/components/glowing-input.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Performance Optimization Styles -->
+    <style>
+        /* Smooth image loading */
+        .office-city-img {
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+            min-height: 200px;
+            object-fit: cover;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        /* Faster grid rendering */
+        .offices-grid {
+            content-visibility: auto;
+        }
+
+        /* Reduce animation overhead on initial load */
+        .office-card {
+            will-change: auto;
+        }
+
+        /* Hide cards initially */
+        .office-card.hidden {
+            display: none;
+        }
+
+        /* Load More Button */
+        .load-more-container {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+        }
+
+        .load-more-btn {
+            background: linear-gradient(135deg, #ff6347 0%, #ff4500 100%);
+            color: white;
+            border: none;
+            padding: 16px 48px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 99, 71, 0.3);
+        }
+
+        .load-more-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 99, 71, 0.4);
+        }
+
+        .load-more-btn:active {
+            transform: translateY(0);
+        }
+
+        .load-more-btn.hidden {
+            display: none;
+        }
+    </style>
+
 </head>
 
 <body>
+    <div id="scroll-progress"></div>
     <!-- Navbar -->
     <div id="navbar-container"></div>
 
@@ -44,7 +119,7 @@
                     <div class="coverage-icon">
                         <i class="fas fa-map-marked-alt"></i>
                     </div>
-                    <h3>50+ Cities</h3>
+                    <h3>63+ Cities</h3>
                     <p>Extensive network covering all major cities and regions across India for seamless connectivity.
                     </p>
                 </div>
@@ -60,7 +135,7 @@
 
                 <div class="coverage-card fade-in fade-in-delay-3">
                     <div class="coverage-icon">
-                        <i class="fas fa-headset"></i>
+                        <i class="fas fa-headset" aria-hidden="true"></i>
                     </div>
                     <h3>Local Support</h3>
                     <p>Dedicated teams in each region provide personalized service and on-ground assistance.</p>
@@ -85,147 +160,28 @@
             <p class="section-subtitle fade-in fade-in-delay-1">Reach out to any of our regional offices. Our dedicated
                 teams are ready to assist you.</p>
 
-            <div class="offices-grid">
-                <div class="office-card fade-in fade-in-delay-1">
-                    <div class="office-header">
-                        <div class="office-icon">
-                            <i class="fas fa-building"></i>
-                        </div>
-                        <h3>Delhi Office</h3>
-                    </div>
-                    <div class="office-details">
-                        <div class="detail-item">
-                            <i class="fas fa-user"></i>
-                            <span>Rahul Sharma</span>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:+919876543210">+91 98765 43210</a>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Head Office • North India coordination</span>
-                        </div>
-                    </div>
-                </div>
+            <!-- Loading Indicator -->
+            <div id="offices-loading" style="text-align: center; padding: 40px;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 3rem; color: var(--primary-color);"></i>
+                <p style="margin-top: 20px; font-size: 1.2rem;">Loading our offices across India...</p>
+            </div>
 
-                <div class="office-card fade-in fade-in-delay-2">
-                    <div class="office-header">
-                        <div class="office-icon">
-                            <i class="fas fa-building"></i>
-                        </div>
-                        <h3>Mumbai Office</h3>
-                    </div>
-                    <div class="office-details">
-                        <div class="detail-item">
-                            <i class="fas fa-user"></i>
-                            <span>Neha Patel</span>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:+919876543210">+91 98765 43210</a>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Western Region Hub • Fast port connectivity</span>
-                        </div>
-                    </div>
-                </div>
+            <!-- Dynamic Offices Grid (will be populated by JavaScript) -->
+            <div class="offices-grid" id="dynamic-offices-grid" style="display: none;">
 
-                <div class="office-card fade-in fade-in-delay-3">
-                    <div class="office-header">
-                        <div class="office-icon">
-                            <i class="fas fa-building"></i>
-                        </div>
-                        <h3>Bengaluru Office</h3>
-                    </div>
-                    <div class="office-details">
-                        <div class="detail-item">
-                            <i class="fas fa-user"></i>
-                            <span>Arjun Rao</span>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:+919876543210">+91 98765 43210</a>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>South Operations Center • Tech corridor support</span>
-                        </div>
-                    </div>
-                </div>
+            </div>
 
-                <div class="office-card fade-in fade-in-delay-4">
-                    <div class="office-header">
-                        <div class="office-icon">
-                            <i class="fas fa-building"></i>
-                        </div>
-                        <h3>Kolkata Office</h3>
-                    </div>
-                    <div class="office-details">
-                        <div class="detail-item">
-                            <i class="fas fa-user"></i>
-                            <span>Priya Sen</span>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:+919876543210">+91 98765 43210</a>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>East Coordination Office • Seamless east-bound routes</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="office-card fade-in fade-in-delay-4">
-                    <div class="office-header">
-                        <div class="office-icon">
-                            <i class="fas fa-building"></i>
-                        </div>
-                        <h3>Hyderabad Office</h3>
-                    </div>
-                    <div class="office-details">
-                        <div class="detail-item">
-                            <i class="fas fa-user"></i>
-                            <span>Sameer Khan</span>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:+919876543210">+91 98765 43210</a>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Telangana & AP Support • Central south coverage</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="office-card fade-in fade-in-delay-4">
-                    <div class="office-header">
-                        <div class="office-icon">
-                            <i class="fas fa-building"></i>
-                        </div>
-                        <h3>Chennai Office</h3>
-                    </div>
-                    <div class="office-details">
-                        <div class="detail-item">
-                            <i class="fas fa-user"></i>
-                            <span>Karthik Iyer</span>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:+919876543210">+91 98765 43210</a>
-                        </div>
-                        <div class="detail-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Tamil Nadu Hub • Port and automotive corridor</span>
-                        </div>
-                    </div>
-                </div>
+            <!-- Load More Button -->
+            <div class="load-more-container" id="load-more-container" style="display: none;">
+                <button class="load-more-btn" id="load-more-btn" onclick="loadMoreOffices()">
+                    <i class="fas fa-chevron-down"></i> Load More Offices
+                </button>
             </div>
         </div>
     </section>
+
+    <!-- Dynamic Region Map Section -->
+    <div id="region-container"></div>
 
     <!-- Network Stats -->
     <section class="network-stats">
@@ -235,22 +191,22 @@
             </p>
 
             <div class="stats-grid">
-                <div class="stat-item fade-in fade-in-delay-1">
-                    <div class="stat-number">6</div>
+                <div class="stat-item">
+                    <div class="stat-number">63+</div>
                     <div class="stat-label">Regional Offices</div>
                 </div>
 
-                <div class="stat-item fade-in fade-in-delay-2">
-                    <div class="stat-number">50+</div>
+                <div class="stat-item">
+                    <div class="stat-number">63+</div>
                     <div class="stat-label">Cities Covered</div>
                 </div>
 
-                <div class="stat-item fade-in fade-in-delay-3">
+                <div class="stat-item">
                     <div class="stat-number">5000+</div>
                     <div class="stat-label">Vehicles Transported</div>
                 </div>
 
-                <div class="stat-item fade-in fade-in-delay-4">
+                <div class="stat-item">
                     <div class="stat-number">24/7</div>
                     <div class="stat-label">Customer Support</div>
                 </div>
@@ -258,25 +214,7 @@
         </div>
     </section>
 
-    <!-- Contact CTA -->
-    <section class="contact-cta-section">
-        <div class="container">
-            <h2 class="section-title fade-in">Get in Touch with Our Team</h2>
-            <p class="fade-in fade-in-delay-1">Have questions or need assistance? Our regional teams are here to help
-                you 24/7.</p>
-
-            <div class="contact-buttons fade-in fade-in-delay-2">
-                <a href="../pages/contact.html" class="contact-btn primary">
-                    <i class="fas fa-phone"></i>
-                    <span>Contact Us</span>
-                </a>
-                <a href="../pages/booking.html" class="contact-btn secondary">
-                    <i class="fas fa-truck"></i>
-                    <span>Book Transport</span>
-                </a>
-            </div>
-        </div>
-    </section>
+    
 
     <!-- Footer -->
     <div id="footer-container"></div>
@@ -288,7 +226,202 @@
     <script src="../js/modules/page-navigation-loader.js"></script>
     <script src="../js/modules/navbar-loader.js?v=2"></script>
     <script src="../js/modules/footer-loader.js"></script>
+    <script src="../js/modules/themes.js"></script>
     <script src="../js/modules/scroll-animations.js"></script>
+    <!-- Component Initializer - Ensures global components (FAB, Chatbot, etc.) are available -->
+    <script src="../js/modules/component-initializer.js"></script>
+
+    <!-- 🚀 Floating Action Menu loaded via footer component -->
+
+
+    <script>
+        // Dynamic Office Card Generator - Fast Loading with All 63 Cities
+        async function generateDynamicOfficeCards() {
+            const loadingEl = document.getElementById('offices-loading');
+            const gridEl = document.getElementById('dynamic-offices-grid');
+            const loadMoreContainer = document.getElementById('load-more-container');
+            
+            try {
+                const response = await fetch('../assets/data/cities.json');
+                const citiesData = await response.json();
+
+                // Generate office cards HTML with direct image loading (limit to 12 cards total)
+                const limitedCitiesData = citiesData.slice(0, 12);
+                const cardsHTML = limitedCitiesData.map((city, index) => {
+                    const cityName = city.name.replace('Car Transport in ', '');
+                    
+                    const regionTaglines = {
+                        'north': 'North India Hub',
+                        'south': 'South Operations Center',
+                        'east': 'East Coordination Office',
+                        'west': 'Western Region Hub',
+                        'central': 'Central India Hub'
+                    };
+                    const tagline = regionTaglines[city.region] || 'Regional Office';
+
+                    const managerNames = [
+                        'Rajesh Kumar', 'Priya Sharma', 'Amit Patel', 'Sneha Singh', 'Vikram Rao',
+                        'Kavita Reddy', 'Arjun Mehta', 'Neha Gupta', 'Sanjay Verma', 'Divya Joshi',
+                        'Rahul Kapoor', 'Anjali Nair', 'Karthik Iyer', 'Pooja Desai', 'Aditya Shah',
+                        'Meera Das', 'Rohit Malhotra', 'Swati Banerjee', 'Manoj Kumar', 'Shruti Yadav'
+                    ];
+                    const managerName = managerNames[index % managerNames.length];
+
+                    const phoneBase = '98765 4' + String(3210 + (index % 100)).padStart(4, '0');
+                    const animationDelay = (index % 6) + 1;
+
+                    // Add 'hidden' class to cards after the first 6
+                    const hiddenClass = index >= 6 ? ' hidden' : '';
+
+                    return `
+                        <div class="office-card${hiddenClass} fade-in fade-in-delay-${animationDelay}" data-city-slug="${city.slug}">
+                            <div class="office-header">
+                                <div class="office-icon">
+                                    <img class="office-city-img" 
+                                         src="${city.external_url || city.image}"
+                                         alt="${cityName} landmark"
+                                         data-slug="${city.slug}"
+                                         data-external="${city.external_url || ''}"
+                                         data-local="${city.image || ''}"
+                                         data-region="${city.region || 'north'}"
+                                         loading="lazy"
+                                         onerror="handleOfficeImageError(this)">
+                                </div>
+                                <h3>${cityName} Office</h3>
+                            </div>
+                            <div class="office-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-user" aria-hidden="true"></i>
+                                    <span>${managerName}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-phone" aria-hidden="true"></i>
+                                    <a href="tel:+91${phoneBase.replace(' ', '')}" aria-label="Call office at +91 ${phoneBase}">+91 ${phoneBase}</a>
+                                </div>
+                                <div class="detail-item location-item">
+                                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                                    <a class="map-open-link" href="#" data-city="${cityName}, India" aria-label="Open ${cityName} office location on map">
+                                        ${tagline} • 300+ transports
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                // Insert cards into the grid
+                gridEl.innerHTML = cardsHTML;
+                
+                // Hide loading, show grid IMMEDIATELY
+                loadingEl.style.display = 'none';
+                gridEl.style.display = 'grid';
+
+                // Show Load More button if there are more than 6 offices
+                if (limitedCitiesData.length > 6) {
+                    loadMoreContainer.style.display = 'block';
+                }
+
+                // Trigger scroll animations
+                if (typeof observeElements === 'function') {
+                    observeElements();
+                }
+
+                console.log(`✅ Successfully generated ${limitedCitiesData.length} office cards (showing first 6)`);
+                
+                // Initialize search functionality after cards are loaded
+                // (handled by region-search.js for the region section)
+            } catch (error) {
+                console.error('Failed to generate office cards:', error);
+                loadingEl.innerHTML = `
+                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #ff6b35;"></i>
+                    <p style="margin-top: 20px; color: #ff6b35;">Failed to load offices. Please refresh the page.</p>
+                `;
+            }
+        }
+
+        // Load More Offices Function
+        function loadMoreOffices() {
+            const hiddenCards = document.querySelectorAll('.office-card.hidden');
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            
+            // Show all hidden cards
+            hiddenCards.forEach(card => {
+                card.classList.remove('hidden');
+            });
+
+            // Hide the Load More button
+            loadMoreBtn.classList.add('hidden');
+
+            // Trigger scroll animations for newly revealed cards
+            if (typeof observeElements === 'function') {
+                observeElements();
+            }
+
+            console.log(`✅ Loaded ${hiddenCards.length} more offices`);
+        }
+
+        // Image error handler with fallback logic (same as city.html)
+        function handleOfficeImageError(img) {
+            const externalUrl = img.dataset.external;
+            const localImage = img.dataset.local;
+            const region = img.dataset.region || 'north';
+
+            // If current src is external URL, try local image
+            if (img.src === externalUrl && localImage) {
+                img.src = localImage.startsWith('/') ? `..${localImage}` : localImage;
+                return;
+            }
+
+            // Final fallback: regional image
+            const fallbackUrl = `../assets/images/fallbacks/${region}-india.jpg`;
+            if (img.src !== fallbackUrl) {
+                img.src = fallbackUrl;
+                img.onerror = null; // Stop trying after regional fallback
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', generateDynamicOfficeCards);
+
+        async function openMapForCity(query) {
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`;
+
+            const res = await fetch(url, { headers: { "Accept": "application/json" } });
+            const data = await res.json();
+
+            if (!data || data.length === 0) {
+                alert("Location not found.");
+                return;
+            }
+
+            const lat = data[0].lat;
+            const lon = data[0].lon;
+            const osmUrl = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=12/${lat}/${lon}`;
+
+            const win = window.open(osmUrl, "_blank", "noopener,noreferrer");
+            if (!win) window.location.href = osmUrl;
+        }
+
+        document.addEventListener("click", (e) => {
+            const link = e.target.closest(".map-open-link");
+            if (!link) return;
+
+            e.preventDefault(); // stops "#" jump
+            openMapForCity(link.dataset.city);
+        });
+    </script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Map Modules -->
+    <script src="../js/modules/region-loader.js"></script>
+    <script src="../js/modules/region-map.js"></script>
+    <script src="../js/modules/region-search.js?v=3"></script>
+    <script src="../js/modules/region-enhancements.js"></script>
+    <script src="../js/modules/region-pagination.js"></script>
+    <script src="../js/script.js"></script>
+
+
 </body>
 
 </html>

@@ -1,3 +1,32 @@
+## 🚨 Contributor Registration
+
+Before starting any contribution, you can complete the registration form if you want its not compulsory.
+
+👉 Registration Form: https://forms.gle/2aVtenoaHg65qi4G7
+
+⚠️ Submitted data is confidential and visible only to the Project Admin for future opportunities.
+
+## 🌟 Open Source Participation
+
+| Program | Program Name | Start Date | End Date |
+|--------|--------------|------------|----------|
+| <img src="frontend/assets/images/GSSoC.png" width="60"/> | **Girls Script Summer of Code (GSSoC)** | May 2026 | Present 2026 |
+| <img src="frontend/assets/images/nsoc.png" width="60"/> | **Nexus Spring of Code (NSOC)** | April 2026 | Present 2026 |
+| <img src="frontend/assets/images/swoc.png" width="60"/> | **Social Winter of Code (SWOC)** | January 2026 | March 2026 |
+| <img src="frontend/assets/images/wocs.png" width="60"/> | **Winter of Code Social (WOCS)** | November 2025 | January 2026 |
+
+
+## 🧑‍💻 Open Source Contributors Welcome!
+
+Join our official Discord server to:
+- Ask and clear doubts
+- Discuss issues and Pull Requests
+- Get guidance from mentors
+- Collaborate with contributors
+
+👉 Discord: https://discord.gg/3FKndgyuJp
+
+
 > 🚘 **Fast • Safe • Reliable Car Transport Services Across India**�
 
 [![Open Source Love](https://img.shields.io/badge/Contributions-Welcome-brightgreen)](https://github.com/your-username/car-transport-website)  
@@ -139,7 +168,10 @@ git push origin feature-name
 > 📚 **Read More:**  
 > - [Contributing Guidelines](docs/CONTRIBUTING.md)  
 > - [Project Roadmap](docs/ROADMAP.md)  
-> - [Design Guidelines](docs/DESIGN_GUIDELINES.md)
+> - [Design Guidelines](docs/DESIGN_GUIDELINES.md)  
+> - [Folder Structure](docs/FOLDER_STRUCTURE.md)  
+> - [Coding Guidelines](docs/CODING_GUIDELINES.md)  
+> - [Naming Conventions](docs/NAMING_CONVENTIONS.md)
 
 > ⭐ Don't forget to **star** the repo if you like this project!
 

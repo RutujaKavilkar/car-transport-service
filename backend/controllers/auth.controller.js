@@ -1,0 +1,178 @@
+import bcrypt from "bcryptjs";
+import User from "../models/User.model.js";
+import { generateToken, generateRefreshToken } from "../utils/jwt.js";
+import jwt from "jsonwebtoken";
+import { success, error } from "../utils/response.js";
+import {
+  isEmailValid,
+  isStrongPassword,
+  isValidPhone,
+} from "../utils/validators.js";
+
+/* ================= REGISTER ================= */
+export const register = async (req, res, next) => {
+  try {
+    let { name, email, password, phone } = req.body;
+
+    if (email) email = email.toLowerCase();
+
+    if (!name || !email || !password || !phone)
+      return error(res, 400, "All fields required");
+
+    if (!isEmailValid(email))
+      return error(res, 400, "Invalid email format");
+
+    if (!isStrongPassword(password))
+      return error(
+        res,
+        400,
+        "Password must have 8 chars, uppercase, number & symbol"
+      );
+
+    // Validate phone before normalization so the user gets a clear error message
+    if (!isValidPhone(phone))
+      return error(res, 400, "Invalid phone number — must be a valid 10-digit Indian mobile number");
+
+    const exists = await User.findOne({ email });
+    if (exists)
+      return error(res, 409, "User already exists");
+
+    const hashed = await bcrypt.hash(password, 12);
+
+    // Normalize phone number to +91XXXXXXXXXX
+    let normalizedPhone = phone.replace(/\D/g, ""); // remove non-digits
+    if (normalizedPhone.length === 10) {
+      normalizedPhone = `+91${normalizedPhone}`;
+    } else if (normalizedPhone.length === 12 && normalizedPhone.startsWith("91")) {
+      normalizedPhone = `+${normalizedPhone}`;
+    }
+
+    const user = await User.create({
+      name: name.trim(),
+      email,
+      password: hashed,
+      phone: normalizedPhone,
+    });
+
+    success(res, 201, "User registered", {
+      token: generateToken(user._id),
+      refreshToken: generateRefreshToken(user._id),
+      user: { id: user._id, email: user.email },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ================= LOGIN ================= */
+export const login = async (req, res, next) => {
+  try {
+    let { email, password } = req.body;
+
+    if (email) email = email.toLowerCase();
+
+    if (!email || !password)
+      return error(res, 400, "Email & password required");
+
+    const user = await User.findOne({ email }).select("+password");
+    if (!user)
+      return error(res, 401, "Invalid credentials");
+
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid)
+      return error(res, 401, "Invalid credentials");
+
+    success(res, 200, "Login successful", {
+      token: generateToken(user._id),
+      refreshToken: generateRefreshToken(user._id),
+      user: { id: user._id, email: user.email },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ================= REFRESH TOKEN ================= */
+export const refreshToken = async (req, res, next) => {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return error(res, 401, "Refresh token required");
+    }
+
+    jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET || "refreshsecret", (err, decoded) => {
+      if (err) {
+        return error(res, 403, "Invalid or expired refresh token");
+      }
+
+      const newToken = generateToken(decoded.id);
+      success(res, 200, "Token refreshed", { token: newToken });
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ================= LOGOUT ================= */
+export const logout = async (req, res, next) => {
+  try {
+    // Clear the cookie
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    // Respond success
+    return success(res, 200, "Logout successful");
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ================= GOOGLE LOGIN ================= */
+export const googleLogin = (req, res, next) => {
+  try {
+    const user = req.user;
+    const token = generateToken(user._id);
+
+    // Send token + user data to client
+    success(res, 200, "Google login successful", {
+      token,
+      user: { id: user._id, email: user.email, name: user.name },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/* ================= GET ALL USERS ================= */
+export const getAllUsers = async (req, res, next) => {
+  try {
+    const { page = 1, limit = 10, search = "" } = req.query;
+
+    const query = {
+      $or: [
+        { name: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+      ],
+    };
+
+    const users = await User.find(query)
+      .select("-password")              // never expose passwords
+      .skip((page - 1) * limit)
+      .limit(Number(limit))
+      .sort({ createdAt: -1 });
+
+    const total = await User.countDocuments(query);
+
+    success(res, 200, "Users fetched successfully", {
+      total,
+      page: Number(page),
+      limit: Number(limit),
+      users,
+    });
+  } catch (err) {
+    next(err);
+  }
+};

@@ -1,57 +1,75 @@
-console.log("✨ Theme switcher loaded!");
+/**
+ * Theme Switcher Module
+ * Handles light/dark mode toggling with persistence and dynamic pathing
+ */
+(function() {
+  'use strict';
 
-document.addEventListener("DOMContentLoaded", () => {
-  const themeLink = document.getElementById("theme-style");
-  const toggleBtn = document.getElementById("theme-toggle");
-  const themeIcon = document.getElementById("theme-icon");
+  console.log("✨ Theme switcher loaded!");
 
-  if (!themeLink || !toggleBtn) {
-    console.warn("⚠️ Theme switcher: Missing required elements.");
-    console.warn("themeLink:", themeLink);
-    console.warn("toggleBtn:", toggleBtn);
-    return;
+  // Define paths dynamically based on current folder depth
+  const path = window.location.pathname;
+  const isInPagesFolder = path.toLowerCase().includes('/pages/');
+  const base = isInPagesFolder ? '..' : '.';
+
+  const LIGHT_PATH = `${base}/css/light-mode.css`;
+  const DARK_PATH = `${base}/css/dark-mode.css`;
+
+  /**
+   * Applies the selected theme to the DOM
+   */
+  function applyTheme(theme) {
+    const themeLink = document.getElementById("theme-style");
+    const themeIcon = document.getElementById("theme-icon");
+
+    if (!themeLink) {
+      console.warn("⚠️ Theme switcher: Hook #theme-style not found.");
+      return;
+    }
+
+    const isDark = theme === "dark";
+    document.body.classList.remove("light", "dark");
+    document.documentElement.classList.remove("light", "dark");
+
+    if (isDark) {
+      themeLink.setAttribute("href", DARK_PATH);
+      document.body.setAttribute("data-theme", "dark");
+      document.documentElement.setAttribute("data-theme", "dark");
+      document.body.classList.add("dark");
+      document.documentElement.classList.add("dark");
+      if (themeIcon) themeIcon.className = "fas fa-moon";
+    } else {
+      themeLink.setAttribute("href", LIGHT_PATH);
+      document.body.setAttribute("data-theme", "light");
+      document.documentElement.setAttribute("data-theme", "light");
+      document.body.classList.add("light");
+      document.documentElement.classList.add("light");
+      if (themeIcon) themeIcon.className = "fas fa-sun";
+    }
+
+    localStorage.setItem("theme", theme);
   }
 
-  console.log("✅ Theme switcher: All elements found!");
-
-  const LIGHT = "./css/light-mode.css";
-  const DARK = "./css/dark-mode.css";
-
-  // Load saved theme from localStorage
+  // 1. Initialize theme immediately
   const savedTheme = localStorage.getItem("theme") || "light";
-  console.log("📋 Saved theme from localStorage:", savedTheme);
   applyTheme(savedTheme);
 
-  // Function to apply theme
-  function applyTheme(theme) {
-    console.log("🎨 Applying theme:", theme);
+  // 2. Handle the toggle button using Event Delegation
+  // This handles the button even if navbar-loader.js adds it later
+  document.addEventListener("click", (e) => {
+    const toggleBtn = e.target.closest("#theme-toggle");
     
-    if (theme === "dark") {
-      themeLink.setAttribute("href", DARK);
-      document.body.setAttribute("data-theme", "dark");
-      if (themeIcon) {
-        themeIcon.className = "fas fa-moon";
-      }
-    } else {
-      themeLink.setAttribute("href", LIGHT);
-      document.body.setAttribute("data-theme", "light");
-      if (themeIcon) {
-        themeIcon.className = "fas fa-sun";
-      }
+    if (toggleBtn) {
+      e.preventDefault();
+      const current = localStorage.getItem("theme") || "light";
+      const newTheme = current === "dark" ? "light" : "dark";
+      applyTheme(newTheme);
     }
-    
-    localStorage.setItem("theme", theme);
-    console.log("💾 Theme saved to localStorage:", theme);
-  }
-
-  // On toggle button click
-  toggleBtn.addEventListener("click", () => {
-    console.log("🖱️ Theme toggle button clicked!");
-    const current = localStorage.getItem("theme") || "light";
-    const newTheme = current === "dark" ? "light" : "dark";
-    console.log("🔄 Switching from", current, "to", newTheme);
-    applyTheme(newTheme);
   });
 
-  console.log("✅ Theme switcher: Event listener attached!");
-});
+  // 3. Ensure icons are correct once the navbar is injected
+  document.addEventListener("DOMContentLoaded", () => {
+    applyTheme(localStorage.getItem("theme") || "light");
+  });
+
+})();

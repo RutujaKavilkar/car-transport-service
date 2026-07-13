@@ -261,55 +261,64 @@
     // MOBILE COMPARISON CARDS
     // ========================================
     function initMobileComparison() {
-        if (window.innerWidth > 768) return;
-
         const comparisonSection = document.querySelector('.pricing-page .comparison-section');
         if (!comparisonSection) return;
 
-        const tableWrapper = comparisonSection.querySelector('.pricing-page .comparison-table-wrapper');
+        const tableWrapper = comparisonSection.querySelector('.pricing-page-comparison-table-wrapper') || 
+                             comparisonSection.querySelector('.comparison-table-wrapper');
         if (!tableWrapper) return;
 
-        // Create mobile cards from table data
-        const table = tableWrapper.querySelector('.pricing-page .comparison-table');
-        const headers = Array.from(table.querySelectorAll('thead th')).slice(1);
-        const rows = table.querySelectorAll('tbody tr');
+        // Check if we are on a small screen
+        if (window.innerWidth <= 768) {
+            // Only create if it doesn't already exist
+            if (!comparisonSection.querySelector('.comparison-mobile-container')) {
+                const table = tableWrapper.querySelector('.comparison-table');
+                const headers = Array.from(table.querySelectorAll('thead th')).slice(1);
+                const rows = table.querySelectorAll('tbody tr');
 
-        const mobileContainer = document.createElement('div');
-        mobileContainer.className = 'comparison-mobile-container';
+                const mobileContainer = document.createElement('div');
+                mobileContainer.className = 'comparison-mobile-container';
 
-        headers.forEach((header, planIndex) => {
-            const card = document.createElement('div');
-            card.className = 'comparison-mobile-card';
-            card.innerHTML = `
-                <div class="comparison-mobile-header">
-                    <h3>${header.textContent}</h3>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="comparison-mobile-content">
-                    ${Array.from(rows).map(row => {
-                        const cells = row.querySelectorAll('td');
-                        return `
-                            <div class="comparison-mobile-item">
-                                <span class="comparison-mobile-label">${cells[0].textContent}</span>
-                                <span class="comparison-mobile-value">${cells[planIndex + 1].innerHTML}</span>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
-            `;
+                headers.forEach((header, planIndex) => {
+                    const card = document.createElement('div');
+                    card.className = 'comparison-mobile-card';
+                    card.innerHTML = `
+                        <div class="comparison-mobile-header">
+                            <h3>${header.textContent}</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="comparison-mobile-content">
+                            ${Array.from(rows).map(row => {
+                                const cells = row.querySelectorAll('td');
+                                return `
+                                    <div class="comparison-mobile-item">
+                                        <span class="comparison-mobile-label">${cells[0].textContent}</span>
+                                        <span class="comparison-mobile-value">${cells[planIndex + 1].innerHTML}</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
 
-            // Add click handler for expand/collapse
-            const cardHeader = card.querySelector('.comparison-mobile-header');
-            cardHeader.addEventListener('click', function () {
-                card.classList.toggle('expanded');
-            });
+                    const cardHeader = card.querySelector('.comparison-mobile-header');
+                    cardHeader.addEventListener('click', function () {
+                        card.classList.toggle('expanded');
+                    });
 
-            mobileContainer.appendChild(card);
-        });
+                    mobileContainer.appendChild(card);
+                });
 
-        // Replace table with mobile cards
-        tableWrapper.style.display = 'none';
-        comparisonSection.appendChild(mobileContainer);
+                tableWrapper.style.display = 'none';
+                comparisonSection.appendChild(mobileContainer);
+            }
+        } else {
+            // Screen is large: Remove mobile cards and show table again
+            const mobileContainer = comparisonSection.querySelector('.comparison-mobile-container');
+            if (mobileContainer) {
+                mobileContainer.remove();
+            }
+            tableWrapper.style.display = 'block';
+        }
     }
 
     // ========================================
@@ -543,6 +552,12 @@
             suv: { base: 8999, perKm: 15 },
             luxury: { base: 12999, perKm: 20 }
         };
+        const emissionRates = {
+            hatchback: 0.20,
+            sedan: 0.25,
+            suv: 0.30,
+            luxury: 0.35
+        };
 
         function calculatePrice() {
             const distance = parseFloat(distanceInput.value);
@@ -564,6 +579,8 @@
             const subtotal = Math.round(basePrice + distanceCharge);
             const gst = Math.round(subtotal * 0.18);
             const total = subtotal + gst;
+            const co2 = Math.round(distance * (emissionRates[vehicleType] || 0.25) * 10) / 10;
+            const trees = Math.max(1, Math.ceil(co2 / 21));
 
             const resultHTML = `
                 <div class="price-breakdown">
@@ -584,6 +601,12 @@
                         <span>Total Estimated Cost:</span>
                         <span class="total-amount">₹${total.toLocaleString('en-IN')}</span>
                     </div>
+                    <div class="eco-summary" style="margin-top:14px;padding:12px;border-radius:10px;background:rgba(22,163,74,.12);color:#e5ffe6">
+                        <h4 style="color:#22c55e;margin:0 0 8px 0"><i class="fas fa-leaf"></i> Environmental Impact</h4>
+                        <div class="breakdown-item"><span>Estimated CO₂:</span><span>${co2} kg</span></div>
+                        <div class="breakdown-item"><span>Offset suggestion:</span><span>Plant ${trees} trees</span></div>
+                        <button class="offset-btn" style="margin-top:8px;background:#22c55e;color:white;border:none;border-radius:8px;padding:8px 12px;cursor:pointer"><i class="fas fa-seedling"></i> Learn how to offset</button>
+                    </div>
                     <p class="calculator-note">
                         <i class="fas fa-info-circle"></i>
                         This is an estimate. Final price may vary based on actual conditions.
@@ -595,6 +618,12 @@
             `;
 
             showResult(resultHTML, 'success');
+            const btn = calculator.querySelector('.offset-btn');
+            if (btn) {
+                btn.addEventListener('click', function(){
+                    alert(`Estimated CO₂: ${co2} kg. Consider planting ${trees} trees or choosing consolidated transport to reduce impact.`);
+                });
+            }
         }
 
         function showResult(content, type) {
@@ -638,48 +667,157 @@
     }
 
     // ========================================
-    // TESTIMONIAL SLIDER
-    // ========================================
-    function initTestimonialSlider() {
-        const sliders = document.querySelectorAll('.testimonial-slider');
-        
-        sliders.forEach(slider => {
-            const track = slider.querySelector('.testimonial-track');
-            const slides = slider.querySelectorAll('.testimonial-slide');
-            const prevBtn = slider.querySelector('.testimonial-prev');
-            const nextBtn = slider.querySelector('.testimonial-next');
-            
-            if (!track || slides.length === 0) return;
+// ENHANCED TESTIMONIAL SLIDER WITH AUTO-PLAY
+// ========================================
+function initTestimonialSlider() {
+    const sliders = document.querySelectorAll('.testimonial-slider');
 
-            let currentSlide = 0;
-            const totalSlides = slides.length;
+    sliders.forEach(slider => {
+        const track = slider.querySelector('.testimonial-track');
+        const slides = slider.querySelectorAll('.testimonial-slide');
+        const prevBtn = slider.closest('.testimonial-section').querySelector('.testimonial-prev');
+        const nextBtn = slider.closest('.testimonial-section').querySelector('.testimonial-next');
+        const dotsContainer = slider.closest('.testimonial-section').querySelector('.testimonial-dots');
 
-            function updateSlider() {
-                const offset = -currentSlide * 100;
-                track.style.transform = `translateX(${offset}%)`;
-                
-                // Update button states
-                prevBtn.disabled = currentSlide === 0;
-                nextBtn.disabled = currentSlide === totalSlides - 1;
+        if (!track || slides.length === 0 || !prevBtn || !nextBtn) return;
+
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+        let autoplayInterval;
+        const autoplayDelay = 5000; // 5 seconds
+
+        // Create dots
+        if (dotsContainer) {
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('span');
+                dot.className = 'testimonial-dot';
+                if (i === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(i));
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function updateSlider(smooth = true) {
+            const offset = -currentSlide * 100;
+            track.style.transition = smooth ? 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)' : 'none';
+            track.style.transform = `translateX(${offset}%)`;
+
+            // Update button states
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+
+            // Update dots
+            const dots = dotsContainer?.querySelectorAll('.testimonial-dot');
+            if (dots) {
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentSlide);
+                });
             }
 
-            prevBtn.addEventListener('click', () => {
-                if (currentSlide > 0) {
-                    currentSlide--;
-                    updateSlider();
-                }
-            });
+            // Update ARIA attributes
+            prevBtn.setAttribute('aria-disabled', currentSlide === 0);
+            nextBtn.setAttribute('aria-disabled', currentSlide === totalSlides - 1);
+        }
 
-            nextBtn.addEventListener('click', () => {
-                if (currentSlide < totalSlides - 1) {
-                    currentSlide++;
-                    updateSlider();
-                }
-            });
+        function goToSlide(index) {
+            if (index >= 0 && index < totalSlides) {
+                currentSlide = index;
+                updateSlider();
+                resetAutoplay();
+            }
+        }
 
-            updateSlider();
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlider();
+            } else {
+                // Loop back to first slide
+                currentSlide = 0;
+                updateSlider();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlider();
+            }
+        }
+
+        function startAutoplay() {
+            autoplayInterval = setInterval(() => {
+                nextSlide();
+            }, autoplayDelay);
+        }
+
+        function stopAutoplay() {
+            if (autoplayInterval) {
+                clearInterval(autoplayInterval);
+            }
+        }
+
+        function resetAutoplay() {
+            stopAutoplay();
+            startAutoplay();
+        }
+
+        // Event Listeners
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            resetAutoplay();
         });
-    }
+
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            resetAutoplay();
+        });
+
+        // Keyboard navigation
+        slider.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevSlide();
+                resetAutoplay();
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+                resetAutoplay();
+            }
+        });
+
+        // Pause on hover
+        slider.addEventListener('mouseenter', stopAutoplay);
+        slider.addEventListener('mouseleave', startAutoplay);
+
+        // Touch/Swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        slider.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            stopAutoplay();
+        });
+
+        slider.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+            startAutoplay();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchStartX - touchEndX > swipeThreshold) {
+                nextSlide();
+            } else if (touchEndX - touchStartX > swipeThreshold) {
+                prevSlide();
+            }
+        }
+
+        // Initialize
+        updateSlider(false);
+        startAutoplay();
+    });
+}
+
 
     // ========================================
     // INITIALIZATION
@@ -714,9 +852,7 @@
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(() => {
-                if (window.innerWidth <= 768) {
-                    initMobileComparison();
-                }
+                initMobileComparison(); 
             }, 250);
         });
 

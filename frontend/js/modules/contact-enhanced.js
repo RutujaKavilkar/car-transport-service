@@ -245,7 +245,7 @@
     if (!form) return;
 
     const nameInput = document.getElementById('name');
-    const phoneInput = document.getElementById('phone');
+    const phoneInput = document.getElementById('splitPhone');
     const emailInput = document.getElementById('email');
     const vehicleSelect = document.getElementById('vehicle');
     const serviceSelect = document.getElementById('service');
@@ -262,18 +262,7 @@
       });
     }
 
-    // Phone validation
-    if (phoneInput) {
-      phoneInput.addEventListener('input', function () {
-        // Allow only numbers
-        this.value = this.value.replace(/[^0-9]/g, '');
-        validateField(this, validatePhone(this.value));
-      });
-
-      phoneInput.addEventListener('blur', function () {
-        validateField(this, validatePhone(this.value));
-      });
-    }
+    // Phone validation handled globally by script.js (#splitPhone)
 
     // Email validation
     if (emailInput) {
@@ -373,6 +362,8 @@
         return 'Please enter a valid 10-digit phone number';
       case 'email':
         return 'Please enter a valid email address';
+      case 'password':
+        return 'Please enter a valid password (min 8 characters)';
       case 'vehicle':
         return 'Please select a vehicle type';
       case 'service':
@@ -387,7 +378,7 @@
   function validateForm() {
     const form = document.getElementById('contactForm');
     const nameInput = document.getElementById('name');
-    const phoneInput = document.getElementById('phone');
+    const phoneInput = document.getElementById('splitPhone');
     const emailInput = document.getElementById('email');
     const vehicleSelect = document.getElementById('vehicle');
     const serviceSelect = document.getElementById('service');
@@ -405,7 +396,7 @@
       isValid = false;
     }
 
-    if (!validateEmail(emailInput.value)) {
+    if (!validateEmail(emailInput.value.trim())) {
       validateField(emailInput, false);
       isValid = false;
     }
@@ -527,6 +518,13 @@
     });
   }
 
+  // Email format validation helper
+  function isValidEmail(email) {
+    // requires username + @ + domain (.com, .in, etc.)
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  }
+
   // Email suggestion
   function initEmailSuggestion() {
     const emailInput = document.getElementById('email');
@@ -616,6 +614,10 @@
 
       // Reset form
       form.reset();
+
+      // Clear validation states
+      form.querySelectorAll('.success, .error').forEach(el => el.classList.remove('success', 'error'));
+      form.querySelectorAll('.success-icon, .error-icon').forEach(el => el.remove());
 
       // Reset button
       submitBtn.disabled = false;

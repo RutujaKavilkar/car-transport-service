@@ -1,42 +1,52 @@
-## Which issue does this PR close?
+# Pull Request — Car Transport Service
 
-<!--
-We generally require a GitHub issue to be filed for all bug fixes and enhancements and this helps us generate change logs for our releases. You can link an issue to this PR using the GitHub syntax. For example `Closes #123` indicates that this PR will close issue #123.
--->
+Thank you for contributing to **Car Transport Service**!  
+Please fill out the following details to help us review your PR efficiently.
 
-- Closes #.
+---
 
-## Rationale for this change
+## 📌 Related Issue
+Fixes # (mention issue number here)
 
-<!--
- Why are you proposing this change? If this is already explained clearly in the issue then this section is not needed.
- Explaining clearly why changes are proposed helps reviewers understand your changes and offer better suggestions for fixes.  
--->
+---
 
-## What changes are included in this PR?
+## Description of Changes
+Describe your changes and their purpose.  
+> Example: Refactored navbar responsiveness / Added new section / Improved layout consistency.
 
-<!--
-There is no need to duplicate the description in the issue here but it is sometimes worth providing a summary of the individual changes in this PR.
--->
+---
 
-## Are these changes tested?
+## Type of Change
+- [ ] 🐛 Bug Fix  
+- [ ] 🔧 Feature Modification  
+- [ ] ✨ New Feature  
+- [ ] 🧹 Maintenance / Cleanup / Documentation Update  
+- [ ] 🎨 UI/UX or Design Update  
+- [ ] 📘 Resource / Content Addition  
+- [ ] Other  (please describe):
 
-<!--
-We typically require tests for all PRs in order to:
-1. Prevent the code from being accidentally broken by subsequent changes
-2. Serve as another way to document the expected behavior of the code
+---
+## Testing
+Describe the tests you ran to verify your changes.
+- [ ] Tested locally
+- [ ] No tests required
+---
+## 📸 Screenshots / Video
+_Attach visuals if your PR affects the UI or layout._
 
-If tests are not included in your PR, please explain why (for example, are they covered by existing tests)?
--->
+---
 
-## Are there any user-facing changes?
+## ✅ Checklist
+- [ ] I’ve read the **CONTRIBUTING.md** guidelines.  
+- [ ] My code follows the project’s conventions.  
+- [ ] I’ve linked the related issue correctly.  
+- [ ] I’ve tested my changes locally.  
+- [ ] I’ve added or updated documentation/comments if needed.  
+- [ ] My PR title follows the branch & commit naming conventions.  
+- [ ] My changes introduce no new warnings or errors.  
+- [ ] I’ve performed a self-review of my work.  
 
-<!--
-If there are user-facing changes then we may require documentation to be updated before approving the PR.
--->
+---
 
-<!--
-If there are any breaking changes to public APIs, please add the `api change` label.
--->
-
-## Screenshots (if Applicable)
+## 💬 Additional Notes (Optional)
+_Add any context, dependencies, or questions for reviewers._
